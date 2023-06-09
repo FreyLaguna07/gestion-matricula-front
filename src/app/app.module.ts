@@ -15,8 +15,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { AppRoutingModule } from './app-routing.module';
 import { NavRoutingModule } from './nav/nav-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { MaterialModule } from './material/material.module';
+import { DashboardComponent } from './modules/dashboard/dashboard.component';
+import { ComponentModule } from './shared/models/components/component.module';
 
 @NgModule({
   declarations: [
@@ -38,12 +39,15 @@ import { MaterialModule } from './material/material.module';
     MatMenuModule,
     AppRoutingModule,
     NavRoutingModule,
-    MaterialModule
+    MaterialModule,
+
   ],
   exports: [
-    NavRoutingModule
+   // TablaComponent
   ],
-  providers: [],
+  providers: [
+
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
