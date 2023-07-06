@@ -1,0 +1,64 @@
+#seccionCompleta {
+	padding-inline: 0px;
+}
+
+#filtroBusqueda {
+	padding-block-end: 8px;
+	#cajaBusqueda {
+		width: 400px;
+	}
+}
+
+#buttonAdd,
+#dropdownBasic1 {
+	width: 101px;
+}
+
+button[disabled] {
+	pointer-events: none;
+}
+// .dropdown-submenu
+// {
+// 	color: #74788d!important;
+// }
+// .container-submenu
+// {
+// 	left:-5%!important
+// }
+// .dropdown-submenu a
+// {
+// 	cursor: pointer;
+// }
+
+::ng-deep {
+	.ag-header-cell.text-center {
+		.ag-header-cell-label {
+		  justify-content: center;
+		}
+	}
+}
+
+#paginacion > nav > ul > li > a {
+	cursor: pointer;
+}
+
+#paginacion {
+	margin: 0;
+	padding-block-start: 9px;
+}
+
+// #paginacion > nav > ul > li > a,
+// #paginacion > nav > ul > li > span,
+// .totalRegistros {
+// 	font-size: 1rem;
+// }
+
+// #paginacion > nav > ul > li > a > i {
+// 	margin: 0;
+// 	padding: 0;
+// }
+
+.totalRegistros > span {
+	padding-left: 4px;
+	font-size: 1rem;
+}

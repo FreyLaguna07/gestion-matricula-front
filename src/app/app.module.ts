@@ -18,6 +18,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { ComponentModule } from './shared/models/components/component.module';
+import { AgGridModule } from 'ag-grid-angular';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,7 @@ import { ComponentModule } from './shared/models/components/component.module';
     AppRoutingModule,
     NavRoutingModule,
     MaterialModule,
-
+    AgGridModule
   ],
   exports: [
    // TablaComponent
