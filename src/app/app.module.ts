@@ -19,12 +19,14 @@ import { MaterialModule } from './material/material.module';
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { ComponentModule } from './shared/models/components/component.module';
 import { AgGridModule } from 'ag-grid-angular';
+import { LoginComponent } from './shared/login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
-    DashboardComponent
+    DashboardComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -44,6 +46,7 @@ import { AgGridModule } from 'ag-grid-angular';
     AgGridModule
   ],
   exports: [
+    LoginComponent
    // TablaComponent
   ],
   providers: [
