@@ -1,0 +1,23 @@
+<button
+	#button
+	role="button"
+	[id]="id"
+	[type]="type"
+	[disabled]="disabled"
+	[ngClass]="ngClassButton"
+	[ngStyle]="ngStyleButton"
+	[attr.aria-label]="ariaLabel"
+	[class]="'btn-' + color"
+	(click)="click()"
+	(keyup.arrowLeft)="arrowLeft()"
+	(keyup.arrowRight)="arrowRight()">
+	<div class="sc-button-prefix" *ngIf="_prefixChildren.length">
+		<ng-content select="[scPrefix]"></ng-content>
+	</div>
+	<span class="sc-button-label" [ngClass]="ngClassLabel">
+		<ng-content></ng-content>
+	</span>
+	<div class="sc-button-suffix" *ngIf="_suffixChildren.length">
+		<ng-content select="[scSuffix]"></ng-content>
+	</div>
+</button>

@@ -1,0 +1,18 @@
+
+
+
+.body{
+  background-color: transparent !important;
+}
+
+#buttonAdd,
+#dropdownBasic1 {
+	width: 101px;
+}
+
+::ng-deep .mat-expansion-panel-content {
+  font-family: initial !important;
+}
+::ng-deep .mat-expansion-panel-header {
+  font-family: initial !important;
+}

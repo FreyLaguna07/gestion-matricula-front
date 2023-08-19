@@ -1,0 +1,8 @@
+<ng-container>
+  <label class="label">{{label}}</label>
+  <mat-form-field color="primary"  appearance="outline" class="mat-form-field">
+    <input matInput [matDatepicker]="picker1" class="size" [formControlName]="controlName">
+    <mat-datepicker-toggle matIconSuffix [for]="picker1" ></mat-datepicker-toggle>
+    <mat-datepicker #picker1></mat-datepicker>
+  </mat-form-field>
+</ng-container>

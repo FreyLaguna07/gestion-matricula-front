@@ -1,0 +1,46 @@
+<mat-card style="height: 100% !important; padding: 1%; display: flex !important;">
+  <mat-card-header>
+    <mat-card-title style=" font-weight: 900; font-family: initial;">
+      <em class="fa fa-book " aria-hidden="true"></em> Curso
+      <label style="font-size: 14px;color: #907b7b;">{{data.subtitle}}</label></mat-card-title>
+  </mat-card-header>
+  <hr>
+  <div class="trapezoid"></div>
+  <div class="text"></div>
+  <mat-card-content style="margin: 1%; margin-top: -5px; height: 100% !important;">
+    <form [formGroup]="formGroup">
+      <div class="row px-0" style="margin-top: -5px;">
+        <div class="col-6 col-md-4 col-lg-3 my-2">
+          <input-text [label]="'Cod. Curso'" controlName="codCurso" [readonly]="readonlyCodCurso"></input-text>
+        </div>
+        <div class=" col-6 col-md-4 col-lg-3 my-2">
+          <input-time [label]="'Horas'" controlName="horas"></input-time>
+        </div>
+        <div class=" col-6 col-md-4 col-lg-6 my-2">
+          <input-text [label]="'Curso'" controlName="curso"></input-text>
+        </div>
+      </div>
+      <div class="row px-0;" style=" margin-top: -25px; margin-bottom: -25px;">
+        <div class="col-6 col-md-4 col-lg-12 my-2">
+          <input-text-area [label]="'Descripción'" controlName="descripcion"></input-text-area>
+        </div>
+      </div>
+    </form>
+  </mat-card-content>
+  <hr>
+  <mat-card-actions align="end">
+    <div align="end" style="margin-bottom: 8px;">
+      <button type="button" class="btn btn-outline-success" (click)="onSave()">GUARDAR </button>
+      </div> &nbsp;&nbsp;&nbsp;
+      <div align="end" style="margin-bottom: 8px;">
+      <button type="button" class="btn btn-outline-danger" (click)="onClose()">CANCELAR</button>
+    </div>
+  </mat-card-actions>
+</mat-card>
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-clip-rotate-multiple">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>

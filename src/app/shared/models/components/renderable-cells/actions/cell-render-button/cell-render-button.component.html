@@ -1,0 +1,26 @@
+<ng-container *ngFor="let option of _configButtons" >
+	<ng-container *ngIf="option?.submenu?.length || 0 > 0; else template">
+		<button
+			matRipple
+			class="btn ag-grid-button__action"
+			[matTooltip]="option?.tooltipOption?.label || ''"
+			[matTooltipClass]="option?.tooltipOption?.classList || ''"
+			[attr.aria-label]="option?.tooltipOption?.label">
+			<em [class]="option?.iconOption?.icon + ' ' + option?.iconOption?.classList + ' p-0'"></em>
+		</button>
+	</ng-container>
+
+	<ng-template #template>
+		<button
+			class="btn ag-grid-button__action"
+      style="margin: 0px 3px 0px 3px;"
+			matRipple
+			(click)="onButtonActionEmit(option?.actionCode || '')"
+			type="button"
+			[matTooltip]="option?.tooltipOption?.label || ''"
+			[matTooltipClass]="option?.tooltipOption?.classList || ''"
+			[attr.aria-label]="option?.tooltipOption?.label">
+			<em [class]="option?.iconOption?.icon + ' ' + option?.iconOption?.classList + ' p-0'"></em>
+		</button>
+	</ng-template>
+</ng-container>

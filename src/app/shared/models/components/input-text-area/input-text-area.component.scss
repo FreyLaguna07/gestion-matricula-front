@@ -1,0 +1,20 @@
+.label {
+  margin-bottom: -2px !important
+}
+
+:host ::ng-deep .mat-mdc-text-field-wrapper {
+  height: 50% !important;
+  width: 100% !important;
+}
+
+:host ::ng-deep .mat-mdc-form-field-flex {
+  margin-top: -7px !important;
+}
+
+.size {
+  font-size: 13px !important;
+}
+
+.mat-form-field {
+  width: 100% !important;
+}

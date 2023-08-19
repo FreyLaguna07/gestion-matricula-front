@@ -1,0 +1,111 @@
+<mat-card>
+  <mat-card-header class="header">
+    <mat-card-title>
+      <label style=" font-weight: 900; font-family: initial;"> REGISTRO DE USUARIO</label>
+    </mat-card-title>
+  </mat-card-header>
+  <div class="trapezoid"></div>
+  <div class="text"></div>
+  <mat-card-content style="margin: 1%; margin-top: -5px;">
+
+    <fieldset class="border p-2">
+      <legend class="float-none w-auto p-2" style="font-size: 17px;">Datos del usuario</legend>
+
+      <form [formGroup]="formGroup">
+        <div class="row px-0" style="margin-top: -5px;">
+          <div class="col-6 col-md-4 col-lg-3 my-2">
+            <ng-select-simple controlName="codPerfil" [label]="'Perfil'" [markFirstItem]="true" [item]="ngSelectperfil$" (change)="onChangePerfil($event)">
+            </ng-select-simple>
+          </div>
+          <div class="col-6 col-md-4 col-lg-3 my-2">
+            <input-text [label]="'Nombres'" controlName="nombre"></input-text>
+          </div>
+          <div class="col-6 col-md-4 col-lg-3 my-2">
+            <input-text [label]="'Apellido paterno'" controlName="apPaterno"></input-text>
+          </div>
+          <div class="col-6 col-md-4 col-lg-3 my-2">
+            <input-text [label]="'Apellido materno'" controlName="apMaterno"></input-text>
+          </div>
+        </div>
+        <div class="row px-0" style="margin-top: -25px;">
+          <div class="col-6 col-md-4 col-lg-3 my-2">
+            <input-number [label]="'Número de DNI'" controlName="nroDni" [maxlength]="8"></input-number>
+          </div>
+          <div class="col-6 col-md-4 col-lg-3 my-2">
+            <date-picker [label]="'Fch. Nacimiento'" controlName="fchNacimiento"></date-picker>
+          </div>
+          <div class="col-6 col-md-4 col-lg-3 my-2">
+            <ng-select-simple [label]="'Sexo'" controlName="sexo" [item]="ngSelectSexo"></ng-select-simple>
+          </div>
+          <div class="col-6 col-md-4 col-lg-3 my-2">
+            <input-text [label]="'Dirección'" controlName="direccion"></input-text>
+          </div>
+        </div>
+
+        <div class="row px-0" style="margin-top: -25px;">
+          <div class="col-6 col-md-4 col-lg-3 my-2">
+            <input-number [label]="'Nro. Celular'" [maxlength]="9" controlName="nroTelefono"></input-number>
+          </div>
+          <div class="col-6 col-md-4 col-lg-3 my-2">
+            <ng-select-simple [label]="'Tipo operador'" [item]="ngSelectTipoOperador" [markFirstItem]="true" controlName="tipoOperador" ></ng-select-simple>
+          </div>
+          <div class="col-6 col-md-4 col-lg-3 my-2">
+            <input-text [label]="'Correo'" controlName="correo" ></input-text>
+          </div>
+          <div class="col-6 col-md-4 col-lg-3 my-2">
+            <input-file controlName="copiDni" [label]="'Copia DNI'" (change)="cargarpdf(formGroup.get('copiDni')?.value, 1)"></input-file>
+          </div>
+        </div>
+        <div class="row px-0" style="margin-top: -25px;" *ngIf="isAlumno">
+          <div class="col-6 col-md-4 col-lg-3 my-2">
+            <input-file controlName="copiPartidaNacimiento" [label]="'Cop. Partida de nacimiento'" (change)="cargarpdf(formGroup.get('copiPartidaNacimiento')?.value, 2)"></input-file>
+          </div>
+          <div class="col-6 col-md-4 col-lg-3 my-2">
+            <input-file controlName="foto" [label]="'Copia de foto'" (change)="cargarpdf(formGroup.get('foto')?.value, 3)"></input-file>
+          </div>
+          <div class="col-6 col-md-4 col-lg-3 my-2">
+            <input-file controlName="certEstudio" [label]="'Cop. Certificado de estudio'" (change)="cargarpdf(formGroup.get('certEstudio')?.value, 4)" ></input-file>
+          </div>
+        </div>
+
+      </form>
+    </fieldset>
+    <br>
+    <mat-expansion-panel [expanded]="isExpanded" [disabled]="!isExpanded" [title]="'Agregar'">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <div class="d-flex align-items-center" style="font-size: 17px; font-weight: 500;">
+            <i class="fa fa-plus fa-sm mr-2" aria-hidden="true"></i>&nbsp; Agregar
+          </div>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <ag-grid-customizable *ngIf="isAlumno"
+        (onAddRow)="openDialog()"
+        [rowData]="apoderadoDto$"
+        [columnDefs]="columnDefsApoderado"
+        [configButtonsAction]="configButtonsAction"
+        (onButtonActionAgGrid)="onButtonActionAgGrid($event[0], $event[1])"
+        (onGridReady)="onGridReadyApoderado($event[0], $event[1])">
+      </ag-grid-customizable>
+
+      <ag-grid-customizable *ngIf="!isAlumno"
+        (onAddRow)="openDialog()"
+        [rowData]="cursoDto$"
+        [columnDefs]="columnDefsCurso"
+        [configButtonsAction]="configButtonsAction"
+        (onButtonActionAgGrid)="onButtonActionAgGrid($event[0], $event[1])"
+        (onGridReady)="onGridReadyCurso($event[0], $event[1])">
+      </ag-grid-customizable>
+    </mat-expansion-panel>
+
+
+  </mat-card-content>
+  <mat-card-actions align="end">
+    <div align="end" style="margin-bottom: 8px;">
+      <button type="button" class="btn btn-outline-success" (click)="onSave()">GUARDAR </button>
+      </div> &nbsp;&nbsp;&nbsp;
+      <div align="end" style="margin-bottom: 8px;">
+      <button type="button" class="btn btn-outline-danger">CANCELAR</button>
+    </div>
+  </mat-card-actions>
+</mat-card>

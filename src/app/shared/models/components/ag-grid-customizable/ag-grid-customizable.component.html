@@ -1,0 +1,93 @@
+<div class="w-100">
+	<!--===========================================-->
+	<!-- AG-GRID HEADER -->
+	<!--===========================================-->
+	<div class="row justify-content-between align-items-center my-2" *ngIf="visibleSearch || btnAdd?.visible || btnImport?.visible || btnExport?.visible || scAgGridButtonHeaderChildren?.length">
+		<div class="col-12 col-sm-12 col-md-5 col-lg-4 my-2" *ngIf="visibleSearch">
+			<div class="input-group no-border">
+				<input type="text" class="form-control form-control-sm" placeholder="Buscar..." [formControl]="_formControlSearch" />
+				<div class="input-group-text">
+					<em class="fas fa-search"></em>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12 col-md-6" *ngIf="btnAdd?.visible || btnImport?.visible || btnExport?.visible || scAgGridButtonHeaderChildren?.length">
+			<div class="d-flex justify-content-end align-items-center">
+				<ng-content *ngIf="scAgGridButtonHeaderChildren?.length" select="[scAgridButtonHeader]"></ng-content>
+
+				<div class="ag-grid-buttom__header my-2" *ngIf="btnExport?.visible">
+					<sc-button
+						#buttonExport
+						size="sm"
+						color="outline-success"
+						[attr.aria-label]="'Exportar'"
+						[fill]="true"
+						[disabled]="btnExport.disabled ? btnExport.disabled == true : _gridApi.paginationGetRowCount() === 0 || false"
+						(onClick)="onExportEmit()">
+						Exportar
+					</sc-button>
+				</div>
+				<div class="ag-grid-buttom__header my-2" *ngIf="btnImport?.visible">
+					<sc-button
+						#buttonImport
+						size="sm"
+						color="outline-primary"
+						[attr.aria-label]="'Importar'"
+						[fill]="true"
+						[disabled]="btnImport.disabled || false"
+						(onClick)="btnFileImport.value = ''; btnFileImport.click()">
+						Importar
+					</sc-button>
+					<input #btnFileImport type="file" hidden="true" (change)="onImportEmit($event)" />
+				</div>
+				<div class="ag-grid-buttom__header my-2" *ngIf="btnAdd?.visible">
+					<sc-button #buttonAdd size="sm" color="warning" [attr.aria-label]="'Agregar'" [fill]="true" [disabled]="btnAdd.disabled || false" (onClick)="onAddRowEmit()"> Agregar </sc-button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--===========================================-->
+	<!-- AG-GRID HEADER END -->
+	<!--===========================================-->
+
+	<!--===========================================-->
+	<!-- AG-GRID PROGRESS IMPORT -->
+	<!--===========================================-->
+	<div class="col-12 p-0 mt-3 mb-3" *ngIf="_progressVisibled">
+		<mat-progress-bar mode="indeterminate" value="40"></mat-progress-bar>
+	</div>
+	<!--===========================================-->
+	<!-- AG-GRID PROGRESS IMPORT  END-->
+	<!--===========================================-->
+
+	<div class="row">
+		<div class="col-12">
+			<div [ngStyle]="_style">
+				<ag-grid-angular
+				#agGrid id="myGrid" class="ag-theme-balham"
+					[ngStyle]="{ height: sizeHeight, width: '100%', flex: '1 1 auto' }"
+					[columnDefs]="menuActions ? _columnDefsActions : columnDefs"
+					[defaultColDef]="_defaultColDef"
+					[domLayout]="_domLayout"
+					[frameworkComponents]="_frameworkComponents"
+					[context]="_context"
+					[animateRows]="true"
+          [rowSelection]="'multiple'"
+					[overlayNoRowsTemplate]="_overlayNoRowsTemplate"
+					[overlayLoadingTemplate]="_overlayLoadingTemplate"
+					[suppressRowClickSelection]="true"
+					[suppressDragLeaveHidesColumns]="true"
+					 [suppressScrollOnNewData]="false"
+					[paginationPageSize]="paginationPageSize"
+					[pagination]="pagination"
+					[suppressPaginationPanel]="true"
+					(paginationChanged)="onPaginationChanged()"
+					(gridReady)="onGridReadyEmit($event)"
+					(rowDataChanged)="onGridChangeEmit()"
+					(selectionChanged)="onSelectionChangedEmit($event)">
+				</ag-grid-angular>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,63 @@
+::ng-deep .btn i {
+	padding-right: 0 !important;
+}
+
+.sc-button {
+	button {
+		display: flex;
+		align-items: center;
+		position: relative;
+		min-width: 84px;
+
+		&:disabled {
+			cursor: no-drop;
+		}
+
+		& i {
+			padding-right: 0 !important;
+		}
+	}
+
+	&-rounded button {
+		border-radius: 2em;
+	}
+
+	&-icon button {
+		--size: 3em;
+		width: var(--size) !important;
+		height: var(--size) !important;
+		padding: 10px;
+		min-width: auto;
+	}
+
+	&-label {
+		flex: 1;
+
+		&-suffix {
+			margin-right: 22px;
+		}
+
+		&-center {
+			text-align: center;
+		}
+
+		&-left {
+			text-align: left;
+		}
+
+		&-right {
+			text-align: right;
+		}
+	}
+
+	&-prefix {
+		margin-right: 0.5em;
+	}
+
+	&-suffix {
+		position: absolute;
+		right: 0.6em;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+}

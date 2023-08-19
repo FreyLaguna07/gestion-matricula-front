@@ -21,17 +21,17 @@ const routes: Routes = [
       {
         path: 'alumno',
         loadChildren: () =>
-          import('./modules/gestion/alumno/alumno.module').then(
-            (m) => m.AlumnoModule
+          import('./modules/gestion/usuario/usuario.module').then(
+            (m) => m.UsuarioModule
           ),
       },
     ],
   },
-  { path: '**', redirectTo: '', pathMatch: 'full' },
+  {path: '**', redirectTo: '', pathMatch: 'full'}
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {useHash: true})],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -24,13 +24,15 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatTooltipModule} from '@angular/material/tooltip';
-
-
+import { MaterialFileInputModule } from 'ngx-material-file-input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
+    NgxSpinnerModule
   ],
   exports: [
     MatButtonModule,
@@ -58,7 +60,9 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatStepperModule,
     ReactiveFormsModule,
     MatTooltipModule,
-
+    MaterialFileInputModule,
+    MatProgressBarModule,
+    NgxSpinnerModule
   ]
 })
 export class MaterialModule { }

@@ -1,0 +1,9 @@
+<ng-container>
+  <label class="label">{{label}}</label>
+  <mat-form-field appearance="outline" class="mat-form-field">
+    <mat-select class="size" (selectionChange)="onChangeSelectCustom($event)" [formControlName]="controlName" [(ngModel)]="setValueSelect">
+      <mat-option *ngFor="let element of item | async" [value]="element.value"
+        class="size">{{element.label}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</ng-container>

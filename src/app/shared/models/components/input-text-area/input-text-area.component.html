@@ -1,0 +1,6 @@
+<ng-container>
+  <label class="label">{{label}}</label>
+  <mat-form-field appearance="outline" class="mat-form-field">
+    <textarea matInput class="size" (change)="onChangeCustom($event)" [formControlName]="controlName"></textarea>
+  </mat-form-field>
+</ng-container>

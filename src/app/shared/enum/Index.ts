@@ -1,0 +1,1 @@
+export { EnumTipoOperador } from './EnumTipoOperador'

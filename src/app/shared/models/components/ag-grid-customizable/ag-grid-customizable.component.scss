@@ -1,0 +1,38 @@
+.cell-wrap-text {
+  white-space: normal !important;
+}
+
+.ag-header {
+  &__center {
+    .ag-header-cell-text {
+      display: block ;
+      width: 100%;
+      text-align: center !important;
+    }
+  }
+  &__right {
+    .ag-header-cell-text {
+      display: block ;
+      width: 100%;
+      text-align: right !important;
+    }
+  }
+}
+
+.ag-grid-buttom__header {
+  width: 8em;
+  margin-right: .6em;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.ag-body-viewport {
+	overflow: auto !important;
+	max-height: 30em !important;
+}
+
+.material-icons {
+  font-size: 24px !important;
+}
