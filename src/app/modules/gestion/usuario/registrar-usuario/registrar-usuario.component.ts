@@ -4,17 +4,20 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { ColDef, ColumnApi, GridApi, RowNode } from 'ag-grid-community';
 import { Observable, of } from 'rxjs';
 import { DataDialog } from 'src/app/@utils/modal-crud-component/DataDialog';
-import { TbApoderadoService } from 'src/app/core/services';
+import { TbApoderadoService, TbUsuarioService } from 'src/app/core/services';
 import { TbPerfilService } from 'src/app/core/services/TbPerfilService.service';
-import { SearchUsuarioDto, TbCursoDto, TbPerfilDto, TbUsuarioDto } from 'src/app/shared/classes';
+import { SearchUsuarioDto, TbCursoDto, TbPerfilDto, TbUsuarioDto, TbUsuarioInsertOrUpdateDto } from 'src/app/shared/classes';
 import { TbApoderadoDto } from 'src/app/shared/classes/TbApoderadoDto';
 import { OpenModalComponent } from 'src/app/shared/models/components/open-modal-component/open-modal-component';
 import { ConfigButtonAction, ConfigButtonAgGrid, EnumButtonType } from 'src/app/@utils/models/sc-ag-grid.interface';
 import { TbCursoService } from 'src/app/core/services/TbCursoService.service';
 import { ModalRegistrarCursoComponent } from '../common/modal-registrar-curso/modal-registrar-curso.component';
-import { ModalRegistrarApoderadoComponent } from '../common/modal-registrar-apoderado copy/modal-registrar-apoderado.component';
+import { ModalRegistrarApoderadoComponent } from '../common/modal-registrar-apoderado/modal-registrar-apoderado.component';
 import { EnumTipoOperador } from 'src/app/shared/enum/EnumTipoOperador';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Loading } from 'src/app/@utils/models/Loading';
+import { MessageUtilService } from 'src/app/@utils/models/message-util.service';
+import { DateFormatPipe } from 'src/app/@utils/date-util/DateFormatPipe';
 
 
 
@@ -45,8 +48,12 @@ export class RegistrarUsuarioComponent
   isExpanded = false;
   isAlumno = false;
 
-  archivos:any;
+  archivos:any = [];
   idCrud!: any;
+  perfil: any;
+  tTbUsuarioInsertOrUpdateDto!: TbUsuarioInsertOrUpdateDto;
+  loading = new Loading();
+
 
   ngSelectTipoOperador: Observable<{ label: string; value: string }[]> = of(
     EnumTipoOperador.TIPO_OPERADOR
@@ -64,10 +71,13 @@ export class RegistrarUsuarioComponent
     protected matDialog: MatDialog,
     public readonly tbCursoService: TbCursoService,
     private route: ActivatedRoute,
+    private readonly tbUsuarioService: TbUsuarioService,
+    private readonly messageUtilService: MessageUtilService,
+    public _dateFormatPipe: DateFormatPipe,
   ) {
     super(matDialog, '650px');
     this.initForm();
-    this.idCrud = this.route.paramMap.subscribe((params: ParamMap) => {return params.get('id')});
+    this.route.paramMap.subscribe((params: ParamMap) => {this.idCrud = params.get('id')});
   }
 
   private readonly _agGridActions: ConfigButtonAgGrid[] = [
@@ -107,6 +117,12 @@ export class RegistrarUsuarioComponent
 
   setData() {
     this.ngSelectperfil$ = this.tbPerfilService.getSelectList();
+    if(this.ngSelectperfil$){
+      this.ngSelectperfil$.forEach((e) => {
+        this.perfil = e;
+      });
+    }
+
     /*this.apoderadoDto$ = this.tbApoderadoService.listApoderado(
       (this.searchUsuarioDto = new SearchUsuarioDto())
     );
@@ -325,16 +341,17 @@ export class RegistrarUsuarioComponent
     }
   }
   onSave(): void {
-
-    if(this.formGroup.valid){
-      if(Number(this.idCrud) != 0 ){
+    console.log("asdsadsad", this.formGroup.valid);
+    //if(this.formGroup.valid){
+console.log("this.idCrud",this.idCrud);
+      if(this.idCrud != "0"){
         this.update();
       }else{
         this.insert();
       }
-    }else{
-      this.formGroup.markAllAsTouched();
-    }
+    //}else{
+    //  this.formGroup.markAllAsTouched();
+//}
     console.log(this.formGroup.getRawValue());
   }
 
@@ -357,33 +374,63 @@ export class RegistrarUsuarioComponent
     };
   }
 
-  insert(): void {}
+  insert(): void {
+    this.loading.showSmall('Guardando...');
+    this.tTbUsuarioInsertOrUpdateDto = this.setResourceToSave("R");
+    this.tbUsuarioService.insert(this.tTbUsuarioInsertOrUpdateDto).subscribe((res)=>{
+      if (res !== null && res.codError === 1) {
+        this.loading.hide();
+        this.messageUtilService.getMessageSuccess("Registro exitoso", "El usuario se registró correctamente.");
+      }else{
+        this.loading.hide();
+        this.messageUtilService.getMessageInfo("Ya existe un registro con el DNI ");
+      }
+    }, err => this.loading.hide());
+  }
+
   update(): void {
-
+    this.loading.showSmall('Actualizando...');
+    this.tTbUsuarioInsertOrUpdateDto = this.setResourceToSave("E");
+    this.tbUsuarioService.update(this.tTbUsuarioInsertOrUpdateDto ).subscribe(res => {
+      if (res !== null && res.codError === 1) {
+        this.loading.hide();
+        this.messageUtilService.getMessageSuccess("Actualización exitosa", "El usuario se actualizó correctamente.");
+      }
+    }, err => this.loading.hide());
   }
-  setResourceToSave(accion: string): void {
+  setResourceToSave(accion: string): TbUsuarioInsertOrUpdateDto {
     const valueForm = this.formGroup.getRawValue();
-    const tbUsuarioDto: TbUsuarioDto = {};
-
-    if (Number(this.idCrud) != 0) {
-      tbUsuarioDto.idUsuario = +this.idCrud;
+    const tTbUsuarioInsertOrUpdateDto: TbUsuarioInsertOrUpdateDto = {};
+    const tipoOperador = EnumTipoOperador.TIPO_OPERADOR.find((e:any) => {
+      return e.value == valueForm.codOperador ? null : e;
+    });
+     const getValuePerfil = this.perfil.find((e: any) => {
+        return e.value == valueForm.codOperador ? null : e;
+      });
+    if (Number(this.idCrud) != 0 && accion == "E") {
+      tTbUsuarioInsertOrUpdateDto.idUsuario = +this.idCrud;
     }
-    tbUsuarioDto.codPerfil = valueForm.codPerfil;
-    //tbUsuarioDto.idPerfil = valueForm.idPerfil;
-    tbUsuarioDto.nomUsuario = valueForm.nomUsuario;
-    tbUsuarioDto.apPaternoUsuario = valueForm.apPaterno;
-    tbUsuarioDto.apMaternoUsuario  = valueForm.apMaterno;
-    tbUsuarioDto.nroDniUsuario  = valueForm.nroDni;
-    tbUsuarioDto.fchNacimeintoUsuario  = valueForm.fchNacimiento;
-    tbUsuarioDto.sexo  = valueForm.sexo;
-    tbUsuarioDto.direccion  = valueForm.direccion;
-    /*tbUsuarioDto.  = valueForm.nroTelefono;
-    tbUsuarioDto.  = valueForm.tipoOperador;
-    tbUsuarioDto.  = valueForm.codOperador;
-    tbUsuarioDto.  = valueForm.correo;
-    tbUsuarioDto.  = valueForm.copiDni;
-    tbUsuarioDto.  = valueForm.copiPartidaNacimiento;
-    tbUsuarioDto.  = valueForm.foto;
-    tbUsuarioDto.  = valueForm.certEstudio;*/
+    tTbUsuarioInsertOrUpdateDto.codPerfil = valueForm.codPerfil;
+    tTbUsuarioInsertOrUpdateDto.idPerfil = getValuePerfil.idPerfil;
+    tTbUsuarioInsertOrUpdateDto.nombre = valueForm.nombre;
+    tTbUsuarioInsertOrUpdateDto.apPaterno = valueForm.apPaterno;
+    tTbUsuarioInsertOrUpdateDto.apMaterno  = valueForm.apMaterno;
+    tTbUsuarioInsertOrUpdateDto.nroDni  = valueForm.nroDni;
+    tTbUsuarioInsertOrUpdateDto.fchNacimiento  = this._dateFormatPipe.formatDate(valueForm.fchNacimiento, 'yyyy-MM-dd');
+    tTbUsuarioInsertOrUpdateDto.sexo  = valueForm.sexo;
+    tTbUsuarioInsertOrUpdateDto.idApoderado  = null;
+    tTbUsuarioInsertOrUpdateDto.nroTelefono = valueForm.nroTelefono;
+    tTbUsuarioInsertOrUpdateDto.tipoOperador  = tipoOperador?.label.split("-")[1];
+    tTbUsuarioInsertOrUpdateDto.codOperador  = valueForm.tipoOperador;
+    tTbUsuarioInsertOrUpdateDto.correo  = valueForm.correo;
+    tTbUsuarioInsertOrUpdateDto.copiDni  = this.archivos.copiDni as string;
+    tTbUsuarioInsertOrUpdateDto.copiPartidaNacimiento  = valueForm.copiPartidaNacimiento;
+    tTbUsuarioInsertOrUpdateDto.foto  = valueForm.foto;
+    tTbUsuarioInsertOrUpdateDto.idContacto  = valueForm.idContacto;
+    tTbUsuarioInsertOrUpdateDto.idDetalle  = valueForm.idDetalle;
+    tTbUsuarioInsertOrUpdateDto.direccion  = valueForm.direccion;
+    tTbUsuarioInsertOrUpdateDto.idCurso  = null;
+    return {...tTbUsuarioInsertOrUpdateDto};
   }
+
 }

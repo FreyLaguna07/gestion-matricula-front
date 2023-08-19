@@ -16,4 +16,12 @@ export class TbUsuarioService {
   listUsuario(search: SearchUsuarioDto): Observable<TbUsuarioDto[]> {
 		return this._http.post<ApiResponse<Required<TbUsuarioDto>[]>>(`${this._url}/list`, search).pipe(map((res) => res.data));
 	}
+
+  insert(entidad: any): Observable<any> {
+		return this._http.post<ApiResponse<any>>(`${this._url}/insert`, entidad).pipe(map((res) => res.data));
+	}
+
+  update(entidad: any): Observable<any> {
+		return this._http.post<ApiResponse<any>>(`${this._url}/update`, entidad).pipe(map((res) => res.data));
+	}
 }
