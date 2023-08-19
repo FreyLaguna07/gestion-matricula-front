@@ -1,0 +1,24 @@
+export interface TbUsuarioInsertOrUpdateDto {
+  codPerfil?: String | null;
+  idPerfil?: number | null;
+  nombre?: String | null;
+  apPaterno?: String | null;
+  apMaterno?: String | null;
+  nroDni?: String | null;
+  fchNacimiento?: String | null;
+  sexo?: String | null;
+  idApoderado?: number | null;
+  nroTelefono?: String | null;
+  tipoOperador?: String | null;
+  codOperador?: String | null;
+  correo?: String | null;
+  copiDni?: String | null;
+  copiPartidaNacimiento?: String | null;
+  foto?: String | null;
+  idUsuario?: number | null;
+  idContacto?: number | null;
+  idDetalle?: number | null;
+  direccion?: String | null;
+  idCurso?: number | null;
+  certEstudio?: String | null;
+}
