@@ -14,7 +14,7 @@
       <form [formGroup]="formGroup">
         <div class="row px-0" style="margin-top: -5px;">
           <div class="col-6 col-md-4 col-lg-3 my-2">
-            <ng-select-simple controlName="codPerfil" [label]="'Perfil'" [markFirstItem]="true" [item]="ngSelectperfil$" (change)="onChangePerfil($event)">
+            <ng-select-simple controlName="codPerfil" [label]="'Perfil'"  [markFirstItem]="true" [item]="ngSelectperfil$" (change)="onChangePerfil($event)">
             </ng-select-simple>
           </div>
           <div class="col-6 col-md-4 col-lg-3 my-2">
@@ -47,57 +47,59 @@
             <input-number [label]="'Nro. Celular'" [maxlength]="9" controlName="nroTelefono"></input-number>
           </div>
           <div class="col-6 col-md-4 col-lg-3 my-2">
-            <ng-select-simple [label]="'Tipo operador'" [item]="ngSelectTipoOperador" [markFirstItem]="true" controlName="tipoOperador" ></ng-select-simple>
+            <ng-select-simple [label]="'Tipo operador'" [item]="ngSelectTipoOperador" [markFirstItem]="true" controlName="codOperador" ></ng-select-simple>
           </div>
           <div class="col-6 col-md-4 col-lg-3 my-2">
             <input-text [label]="'Correo'" controlName="correo" ></input-text>
           </div>
           <div class="col-6 col-md-4 col-lg-3 my-2">
-            <input-file controlName="copiDni" [label]="'Copia DNI'" (change)="cargarpdf(formGroup.get('copiDni')?.value, 1)"></input-file>
+            <input-file controlName="copiDni" [label]="'Copia DNI'" [accept]="'.pdf'" (change)="cargarpdf(formGroup.get('copiDni')?.value, 1)"></input-file>
           </div>
         </div>
         <div class="row px-0" style="margin-top: -25px;" *ngIf="isAlumno">
           <div class="col-6 col-md-4 col-lg-3 my-2">
-            <input-file controlName="copiPartidaNacimiento" [label]="'Cop. Partida de nacimiento'" (change)="cargarpdf(formGroup.get('copiPartidaNacimiento')?.value, 2)"></input-file>
+            <input-file controlName="copiPartidaNacimiento" [label]="'Cop. Partida de nacimiento'" [accept]="'.pdf'" (change)="cargarpdf(formGroup.get('copiPartidaNacimiento')?.value, 2)"></input-file>
           </div>
           <div class="col-6 col-md-4 col-lg-3 my-2">
-            <input-file controlName="foto" [label]="'Copia de foto'" (change)="cargarpdf(formGroup.get('foto')?.value, 3)"></input-file>
+            <input-file controlName="foto" [label]="'Copia de foto'" [accept]="'.png'" (change)="cargarpdf(formGroup.get('foto')?.value, 3)"></input-file>
           </div>
           <div class="col-6 col-md-4 col-lg-3 my-2">
-            <input-file controlName="certEstudio" [label]="'Cop. Certificado de estudio'" (change)="cargarpdf(formGroup.get('certEstudio')?.value, 4)" ></input-file>
+            <input-file controlName="certEstudio" [label]="'Cop. Certificado de estudio'" [accept]="'.pdf'" (change)="cargarpdf(formGroup.get('certEstudio')?.value, 4)" ></input-file>
           </div>
         </div>
 
       </form>
     </fieldset>
     <br>
-    <mat-expansion-panel [expanded]="isExpanded" [disabled]="!isExpanded" [title]="'Agregar'">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          <div class="d-flex align-items-center" style="font-size: 17px; font-weight: 500;">
-            <i class="fa fa-plus fa-sm mr-2" aria-hidden="true"></i>&nbsp; Agregar
-          </div>
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-      <ag-grid-customizable *ngIf="isAlumno"
-        (onAddRow)="openDialog()"
-        [rowData]="apoderadoDto$"
-        [columnDefs]="columnDefsApoderado"
-        [configButtonsAction]="configButtonsAction"
-        (onButtonActionAgGrid)="onButtonActionAgGrid($event[0], $event[1])"
-        (onGridReady)="onGridReadyApoderado($event[0], $event[1])">
-      </ag-grid-customizable>
-
-      <ag-grid-customizable *ngIf="!isAlumno"
-        (onAddRow)="openDialog()"
-        [rowData]="cursoDto$"
-        [columnDefs]="columnDefsCurso"
-        [configButtonsAction]="configButtonsAction"
-        (onButtonActionAgGrid)="onButtonActionAgGrid($event[0], $event[1])"
-        (onGridReady)="onGridReadyCurso($event[0], $event[1])">
-      </ag-grid-customizable>
-    </mat-expansion-panel>
-
+    <fieldset class="border p-2">
+      <legend class="float-none w-auto p-2" style="font-size: 17px;font-weight: 900;">Asignar</legend>
+      <mat-tab-group [selectedIndex]="isSelect">
+        <mat-tab label="Aministrador" [disabled]="true"></mat-tab>
+        <mat-tab label="Curso" [disabled]="true">
+          <ag-grid-customizable
+            (onAddRow)="openDialog()"
+            [rowData]="cursoDto$"
+            [columnDefs]="columnDefsCurso"
+            [sizeHeight]="'100%'"
+            [configButtonsAction]="configButtonsAction"
+            (onButtonActionAgGrid)="onButtonActionAgGrid($event[0], $event[1])"
+            (onGridReady)="onGridReadyCurso($event[0], $event[1])">
+          </ag-grid-customizable>
+        </mat-tab>
+        <mat-tab label="Apoderado" [disabled]="true">
+          <ag-grid-customizable
+            (onAddRow)="openDialog()"
+            [rowData]="apoderadoDto$"
+            [sizeHeight]="'100%'"
+            [columnDefs]="columnDefsApoderado"
+            [rowSelection]="'single'"
+            [configButtonsAction]="configButtonsAction"
+            (onButtonActionAgGrid)="onButtonActionAgGrid($event[0], $event[1])"
+            (onGridReady)="onGridReadyApoderado($event[0], $event[1])">
+          </ag-grid-customizable>
+        </mat-tab>
+      </mat-tab-group>
+    </fieldset>
 
   </mat-card-content>
   <mat-card-actions align="end">

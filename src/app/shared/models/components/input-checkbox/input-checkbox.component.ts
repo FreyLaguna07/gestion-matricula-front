@@ -1,10 +1,10 @@
-import { Component, OnInit, SkipSelf, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, SkipSelf, Output, EventEmitter } from '@angular/core';
 import { ControlContainer } from '@angular/forms';
 
 @Component({
-  selector: 'input-number',
-  templateUrl: './input-number.component.html',
-  styleUrls: ['./input-number.component.scss'],
+  selector: 'input-checkbox',
+  templateUrl: './input-checkbox.component.html',
+  styleUrls: ['./input-checkbox.component.scss'],
   viewProviders: [
     {
       provide: ControlContainer,
@@ -13,22 +13,16 @@ import { ControlContainer } from '@angular/forms';
     },
   ],
 })
-export class InputNumberComponent implements OnInit {
+export class InputCheckboxComponent implements OnInit {
 
   @Input() label!: String;
-  @Input() controlName!: string;
+  @Input() disabled!: boolean;
   @Input() readonly!: boolean;
-  @Input() maxlength!: number;
-  @Input() minlength!: number;
+  @Input() controlName!: string;
   @Output() change = new EventEmitter<any>();
-
   constructor() { }
 
   ngOnInit() {
-  }
-
-  isNumeric(val:any){
-    return !isNaN(Number(val.key));
   }
 
   onChangeCustom(event: any): void {
@@ -38,4 +32,5 @@ export class InputNumberComponent implements OnInit {
     }
     //	}
   }
+
 }

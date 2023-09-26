@@ -19,6 +19,7 @@ export interface TbUsuarioInsertOrUpdateDto {
   idContacto?: number | null;
   idDetalle?: number | null;
   direccion?: String | null;
-  idCurso?: number | null;
+  idCursos?: any | null;
   certEstudio?: String | null;
+  estadoAlumno?: number | null;
 }

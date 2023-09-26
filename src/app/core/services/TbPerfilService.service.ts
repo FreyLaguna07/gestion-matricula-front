@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 import { ApiResponse } from 'src/app/@utils/models/ApiResponse';
 import { NgSelectOption } from 'src/app/@utils/models/ngselect.interfaces';
 import { TbPerfilDto } from 'src/app/shared/classes';
@@ -20,17 +20,16 @@ export class TbPerfilService {
 	}
 
   getSelectList(): Observable<NgSelectOption<TbPerfilDto>[]> {
-
 		if (!this._dataSelect$)
 			this._dataSelect$ = this.listPerfil().pipe(
 				map((data) =>
 					data.map((item) => ({
 						...item,
-						value: ""+item.cdoPerfil,
-						label: `${item.cdoPerfil} - ${item.nombre}`,
+						value: ""+item.codPerfil,
+						label: `${item.codPerfil} - ${item.nombre}`,
 					}))
 				),
-				//shareReplay(1)
+				shareReplay(1)
 			);
 
 		return this._dataSelect$;

@@ -19,12 +19,20 @@ const routes: Routes = [
         loadChildren: () => import('./nav/nav.module').then((m) => m.NavModule),
       },
       {
-        path: 'alumno',
+        path: 'usuario',
         loadChildren: () =>
           import('./modules/gestion/usuario/usuario.module').then(
             (m) => m.UsuarioModule
           ),
       },
+      {
+        path: 'matricula',
+        loadChildren: () =>
+          import('./modules/gestion/matricula/matricula.module').then(
+            (m) => m.MatriculaModule
+          ),
+      },
+
     ],
   },
   {path: '**', redirectTo: '', pathMatch: 'full'}

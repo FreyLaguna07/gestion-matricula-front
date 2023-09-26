@@ -42,7 +42,7 @@ export abstract class OpenModalComponent<T>  {
         },
       })
       .afterClosed().subscribe((response) => {
-        console.log('aquiii', response);
+        //console.log('aquiii', response);
         this.setCloseDialog(response);
         //if (response) { this.genericList(); }
       });

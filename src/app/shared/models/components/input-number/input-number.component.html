@@ -2,6 +2,6 @@
   <label class="label">{{label}}</label>
   <mat-form-field appearance="outline" class="mat-form-field">
     <input matInput class="size" [maxlength]="maxlength" [minlength]="minlength" (change)="onChangeCustom($event)"
-      (keypress)="isNumeric($event)" [formControlName]="controlName">
+      (keypress)="isNumeric($event)" [formControlName]="controlName" [readonly]="readonly">
   </mat-form-field>
 </ng-container>

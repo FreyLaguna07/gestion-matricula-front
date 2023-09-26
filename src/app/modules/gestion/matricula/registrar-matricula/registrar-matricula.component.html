@@ -1,0 +1,83 @@
+<mat-card style="margin-bottom: 0px !important; ">
+  <mat-card-header class="header">
+    <mat-card-title>
+      <label style=" font-weight: 900; font-family: initial;">REGISTRO DE MATRICULA</label>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content style="margin: 1%;">
+    <div class="row">
+      <div class="col-6 col-md-4 col-lg-2 my-2" align="center">
+        <fieldset class="border p-2" style="width: 130px; height: 170px;">
+          <img src={{imageBase64.dni}} style="    width: 100% !important; height: 120% !important; margin-top: -20px;"/>
+          <legend class="float-none w-auto p-2" style="font-size: 14px;">FOTO</legend>
+
+        </fieldset>
+      </div>
+      <fieldset class="border p-2 col-10 col-md-10 col-lg-10 my-2">
+        <legend class="float-none w-auto p-2" style="font-size: 17px;">Datos del alumno</legend>
+        <form [formGroup]="formGroup">
+          <div class="row px-0" style="margin-top: -25px;">
+            <div class="col-6 col-md-4 col-lg-4 my-2">
+              <input-text [label]="'Nombres'" controlName="nombre" [readonly]="true"></input-text>
+            </div>
+            <div class="col-6 col-md-4 col-lg-4 my-2">
+              <input-text [label]="'Apellido paterno'" controlName="apPaterno" [readonly]="true"></input-text>
+            </div>
+            <div class="col-6 col-md-4 col-lg-4 my-2">
+              <input-text [label]="'Apellido materno'" controlName="apMaterno" [readonly]="true"></input-text>
+            </div>
+          </div>
+          <div class="row px-0" style="margin-top: -35px; margin-bottom: -25px;">
+            <div class="col-6 col-md-4 col-lg-4 my-2">
+              <input-text [label]="'Nro. DNI'" controlName="nroDni" [readonly]="true"></input-text>
+            </div>
+            <div class="col-6 col-md-4 col-lg-4 my-2">
+              <input-text [label]="'Sexo'" controlName="sexo" [readonly]="true"></input-text>
+            </div>
+            <div class="col-6 col-md-4 col-lg-4 my-2">
+              <input-text [label]="'Año escolar'" controlName="anioEscolar" [readonly]="true"></input-text>
+            </div>
+          </div>
+        </form>
+      </fieldset>
+      <fieldset class="border p-2 col-8 col-md-10 col-lg-12 my-2">
+        <legend class="float-none w-auto p-2" style="font-size: 17px;">Datos de matricula</legend>
+        <form [formGroup]="formGroup">
+          <div class="row px-0" style="margin-top: -5px;">
+            <div class="col-6 col-md-4 col-lg-3 my-2">
+                <ng-select-simple [label]="'Nivel academico'" controlName="tipoFiltro" [item]="ngSelectNivel$" (change)="onChangeSelectNivelAcademico($event)" [markFirstItem]="true"></ng-select-simple>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 my-2">
+              <ng-select-simple [label]="'Grado'" controlName="grado" [item]="ngSelectGrado$" (change)="onChangeSelectGrado($event)" [markFirstItem]="true"></ng-select-simple>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 my-2">
+                <ng-select-simple [label]="'Sección'" controlName="seccion" (change)="onChangeSelectSeccion($event)"  [item]="ngSelectSeccion$" [markFirstItem]="true"></ng-select-simple>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2 my-2" >
+              <input-text [label]="'Cantidad alumno'" controlName="cantAlumno"  [readonly]="true"></input-text>
+            </div>
+            <div class="col-6 col-md-4 col-lg-1 my-2">
+              <input-checkbox [label]="'Activo'" controlName="estAlumno" [disabled]="true"></input-checkbox>
+            </div>
+          </div>
+        </form>
+      </fieldset>
+    </div>
+    <ag-grid-customizable
+      [menuActions]="false"
+      [btnAdd]="{visible:false}"
+      [rowData]="rowData$"
+      [columnDefs]="columnDefs"
+      [sizeHeight]="'100%'">
+    </ag-grid-customizable>
+
+  </mat-card-content>
+  <mat-card-actions align="end">
+    <div align="end" style="margin-bottom: 8px;">
+      <button type="button" class="btn btn-outline-success" (click)="onSave()">MATRICULAR </button>
+      </div> &nbsp;&nbsp;&nbsp;
+      <div align="end" style="margin-bottom: 8px;">
+      <button type="button" class="btn btn-outline-danger">CANCELAR</button>
+    </div>
+  </mat-card-actions>
+</mat-card>

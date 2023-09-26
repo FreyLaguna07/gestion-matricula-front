@@ -7,4 +7,16 @@ export interface TbCursoDto{
   estado?: Boolean | null;
   fchCreacion?: Date | null;
   fchActualizacion?: Date | null;
+
+  //tb_grado
+  idGrado?: number | null;
+  codGrado?: string | null;
+  nomGrado?: string | null;
+  nivel?: string | null;
+
+  //docente
+  nomDocente?: string | null;
+	apPaternoDocente?: string | null;
+	apMaternoDocente?: string | null;
+	nroDniDocente?: string | null;
 }

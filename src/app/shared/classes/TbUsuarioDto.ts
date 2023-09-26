@@ -27,4 +27,7 @@ export interface TbUsuarioDto {
   telefonoApooderado?: String | null;
   codOperadorApoderado?: String | null;
   direccion?: String | null;
+  certEstudio?: String | null;
+  idCurso?: number | null
+  idCursos?: any | null
 }

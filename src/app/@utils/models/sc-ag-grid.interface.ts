@@ -5,6 +5,7 @@ export enum EnumButtonType {
   TYPE_DELETE = 'TYPE_DELETE',
 	TYPE_ADD = 'TYPE_ADD',
   TYPE_VER_RD = 'TYPE_VER_RD',
+  TYPE_MATRICULAR = 'TYPE_MATRICULAR',
 }
 
 export interface DisabledFuc {

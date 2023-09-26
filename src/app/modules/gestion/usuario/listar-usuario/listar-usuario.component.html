@@ -1,6 +1,6 @@
 <mat-card style="margin-bottom: 0px !important; ">
   <mat-card-header class="header">
-    <mat-card-title><label style=" font-weight: 900; font-family: initial;">USUARIOS</label>
+    <mat-card-title><label style=" font-weight: 900; font-family: initial;">LISTA DE USUARIOS</label>
     </mat-card-title>
   </mat-card-header>
   <mat-card-content style="margin: 1%;">
@@ -53,7 +53,7 @@
     </mat-expansion-panel>
 
     <ag-grid-customizable
-      [columnDefs]="columnDefsAdmin"
+      [columnDefs]="columnDefs"
       [rowData]="rowData$"
       (onAddRow)="addRow()"
       (onGridReady)="onGridReadyHeader($event[0], $event[1])"

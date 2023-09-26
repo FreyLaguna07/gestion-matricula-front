@@ -16,6 +16,7 @@ import { ScButton } from './sc-button/sc-button.component';
 import { ScButtonModule } from './sc-button/sc-button.module';
 import { InputTextAreaComponent } from './input-text-area/input-text-area.component';
 import { InputTimeComponent } from './input-time/input-time.component';
+import { InputCheckboxComponent } from './input-checkbox/input-checkbox.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { InputTimeComponent } from './input-time/input-time.component';
     EditButtonComponent,
     EditDeleteComponent,
     AgGridCustomizableComponent,
-    InputTimeComponent
+    InputTimeComponent,
+    InputCheckboxComponent
   ],
 
   imports: [
@@ -53,8 +55,8 @@ import { InputTimeComponent } from './input-time/input-time.component';
     EditButtonComponent,
     EditDeleteComponent,
     AgGridCustomizableComponent,
-    InputTimeComponent
-
+    InputTimeComponent,
+    InputCheckboxComponent
   ],
   providers: [],
 })

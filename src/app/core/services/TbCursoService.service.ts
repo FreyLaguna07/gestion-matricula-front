@@ -2,10 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { NgSelectOption } from 'src/app/@utils/models/ngselect.interfaces';
-import { SearchUsuarioDto, TbCursoDto } from 'src/app/shared/classes';
+import { TbCursoDto } from 'src/app/shared/classes';
 import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
 import { ApiResponse } from 'src/app/@utils/models/ApiResponse';
+import { SearchCurso } from 'src/app/shared/classes-custom';
 
 @Injectable({
   providedIn: 'root',
@@ -15,8 +16,8 @@ export class TbCursoService {
   private _dataSelect$?: Observable<NgSelectOption<TbCursoDto>[]>;
   constructor(private readonly _http: HttpClient) {}
 
-  listCurso(idCurso: number): Observable<TbCursoDto[]> {
-    return this._http.get<ApiResponse<Required<TbCursoDto>[]>>(`${this._url}/list/${idCurso}`).pipe(map((res) => res.data));
+  listCurso(search: SearchCurso): Observable<TbCursoDto[]> {
+    return this._http.post<ApiResponse<Required<TbCursoDto>[]>>(`${this._url}/list`, search).pipe(map((res) => res.data));
   }
 
 	insert(entidad: any): Observable<any> {

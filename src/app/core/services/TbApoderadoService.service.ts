@@ -2,11 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { NgSelectOption } from 'src/app/@utils/models/ngselect.interfaces';
-import { SearchUsuarioDto } from 'src/app/shared/classes';
 import { TbApoderadoDto } from 'src/app/shared/classes/TbApoderadoDto';
 import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
 import { ApiResponse } from 'src/app/@utils/models/ApiResponse';
+import { SearchUsuarioDto } from 'src/app/shared/classes-custom';
 
 @Injectable({
   providedIn: 'root',

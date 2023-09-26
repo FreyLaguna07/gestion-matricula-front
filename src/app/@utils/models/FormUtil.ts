@@ -117,33 +117,6 @@ export class FormUtil implements OnDestroy {
 
 									if (option !== null) resolve(option);
 									else resolve(null);
-
-									// options.forEach(option => {
-									//     if (option[first_id_property] !== null || option[first_id_property] !== undefined) {
-									//         if (typeof value === 'string') {
-									//             if (option[first_id_property] == value.trim())
-									//                 resolve(option);
-									//         } else if (typeof value === 'number') {
-									//             if (option[first_id_property] == value)
-									//                 resolve(option);
-									//         }
-
-									//         resolve(null);
-									//     }
-									//     // if (eval('option.first_id_property') !== null || eval('option.first_id_property')  !== undefined) {
-									//     //     if (typeof value === 'string') {
-									//     //         if (eval('option.first_id_property') == value.trim())
-									//     //             resolve(option);
-									//     //     } else if (typeof value === 'number') {
-									//     //         if (eval('option.first_id_property') == value)
-									//     //             resolve(option);
-									//     //     }
-
-									//     //     resolve(null);
-									//     // }
-
-									//     resolve(null);
-									// })
 								}
 							} else resolve(null);
 						},

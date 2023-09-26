@@ -1,29 +1,22 @@
-import { Component,
-  OnInit,
-  ViewChild,
+import { Component, OnInit, ViewChild,
   Input,
   AfterViewInit,
   ChangeDetectorRef,
   AfterViewChecked
 } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { DataTable } from 'src/app/@utils/data-table/DataTable';
 import { ColDef, ColumnApi, Grid, GridApi, RowNode } from 'ag-grid-community';
 import { MatAccordion } from '@angular/material/expansion';
 import { TbUsuarioService } from 'src/app/core/services';
-import {
-  SearchUsuarioDto,
-  TbPerfilDto,
-  TbUsuarioDto,
-} from 'src/app/shared/classes';
-import { Observable, of, tap } from 'rxjs';
+import { TbPerfilDto, TbUsuarioDto } from 'src/app/shared/classes';
+import { Observable, of } from 'rxjs';
 import { TbPerfilService } from 'src/app/core/services/TbPerfilService.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { convertObserverToPromise } from 'src/app/@utils/models/FormUtil';
 import { Router } from '@angular/router';
 import { DateFormatPipe } from 'src/app/@utils/date-util/DateFormatPipe';
 import { ConfigButtonAction, ConfigButtonAgGrid, EnumButtonType } from 'src/app/@utils/models/sc-ag-grid.interface';
-import { NgxSpinnerService } from "ngx-spinner";
+import { SearchUsuarioDto } from 'src/app/shared/classes-custom';
 
 @Component({
   selector: 'app-listar-usuario',
@@ -40,7 +33,7 @@ export class ListarUsuarioComponent implements OnInit, AfterViewInit, AfterViewC
   isDisbledNomAp = false;
 
   tbColumns: DataTable[] = [];
-  columnDefsAdmin: ColDef[] = [];
+  columnDefs: ColDef[] = [];
   formGroup!: FormGroup;
   rowData$: Observable<TbUsuarioDto[]> = of([]);
   ngSelectperfil$: Observable<TbPerfilDto[]> = of([]);
@@ -58,14 +51,12 @@ export class ListarUsuarioComponent implements OnInit, AfterViewInit, AfterViewC
   ]);
 
   constructor(
-
     public readonly tbUsuarioService: TbUsuarioService,
     public readonly tbPerfilService: TbPerfilService,
     public readonly _fb: FormBuilder,
     public readonly routers: Router,
     public _dateFormatPipe: DateFormatPipe,
     private readonly changeDetectorRef: ChangeDetectorRef,
-    private spinner: NgxSpinnerService
   ) {
     this.initForm();
   }
@@ -81,7 +72,7 @@ export class ListarUsuarioComponent implements OnInit, AfterViewInit, AfterViewC
   ngOnInit() {
 
     this.onInitNgSelect();
-    this.columnDefsAdmin = [
+    this.columnDefs = [
       {
         headerName: 'Código y/o Nro DNI',
         field: 'nroDniUsuario',
@@ -192,8 +183,8 @@ export class ListarUsuarioComponent implements OnInit, AfterViewInit, AfterViewC
   initForm() {
     this.formGroup = this._fb.group({
       tipoFiltro: [null],
-      codPerfil: [null, [Validators.required]],
-      nroDni: [null,[Validators.required, Validators.minLength(8), Validators.maxLength(8)]],
+      codPerfil: [null],
+      nroDni: [null],
       nombre: [null],
       apPaterno: [null],
       apMaterno: [null],
@@ -213,6 +204,9 @@ export class ListarUsuarioComponent implements OnInit, AfterViewInit, AfterViewC
 
   onButtonActionAgGrid(type: string, rowNode: RowNode): void {
     console.log("111111",{ type, rowNode });
+    if (type == 'TYPE_EDIT') {
+      this.routers.navigate([`./nav/usuario/registrar/`+`${rowNode.data.idUsuario+'-'+rowNode.data.codPerfil}`]);
+    }
   }
 
   onChangeSelect(e: any) {
@@ -220,7 +214,7 @@ export class ListarUsuarioComponent implements OnInit, AfterViewInit, AfterViewC
     switch (e.value) {
       case '01':
         this.isDisbledNroDni = false;
-        this.isDisbledRangoFch = true;
+       this.isDisbledRangoFch = true;
         this.isDisbledNomAp = false;
         this.formGroup.get('fchInicio')?.setValue(this._dateFormatPipe.getFirstDayOfMonth());
         this.formGroup.get('fchFin')?.setValue(this._dateFormatPipe.getLastDayOfMonth());
@@ -254,7 +248,7 @@ export class ListarUsuarioComponent implements OnInit, AfterViewInit, AfterViewC
   }
 
   addRow() {
-    return this.routers.navigate(['./nav/alumno/registrar/'+ `${0}`]);
+    return this.routers.navigate([`./nav/usuario/registrar/`+ `${0}`]);
   }
 
   isFirstEmit = true;
@@ -265,10 +259,11 @@ export class ListarUsuarioComponent implements OnInit, AfterViewInit, AfterViewC
         this.isFirstEmit = false;
       } catch {}
     }
-   // if (this.formGroup.valid) {
+    if (this.formGroup.valid) {
+      //this.gridApi.showLoadingOverlay();
       const formValue = this.formGroup.getRawValue();
       let search = (this.searchUsuarioDto = {
-        codPerfil: formValue.codPerfil,
+        codPerfil: formValue.codPerfil != undefined ? formValue.codPerfil : '01',
         nroDni: formValue.nroDni,
         nombre: formValue.nombre,
         apPaterno: formValue.apPaterno,
@@ -276,16 +271,18 @@ export class ListarUsuarioComponent implements OnInit, AfterViewInit, AfterViewC
         fchInicio: formValue.fchInicio ? this._dateFormatPipe.formatDate(formValue.fchInicio, 'yyyy-MM-dd') : null,
         fchFin: formValue.fchFin ? this._dateFormatPipe.formatDate(formValue.fchFin, 'yyyy-MM-dd') : null,
       });
-      this.tbUsuarioService.listUsuario(search)
+      await this.tbUsuarioService.listUsuario(search).then((data:any) =>{
+        this.gridApi?.setRowData(data);
+      })
+      /*this.tbUsuarioService.listUsuario(search)
         .pipe(
           tap((data) => {
             this.gridApi?.setRowData(data);
           })
         )
-        .subscribe();
-    //} else {
-     // this.formGroup.markAllAsTouched();
-    //}
+        .subscribe();*/
+    } else {
+      this.formGroup.markAllAsTouched();
+    }
   }
-
 }

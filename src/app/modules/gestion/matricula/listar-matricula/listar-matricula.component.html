@@ -1,0 +1,71 @@
+<mat-card style="margin-bottom: 0px !important; ">
+    <mat-card-header class="header">
+        <mat-card-title>
+            <label style=" font-weight: 900; font-family: initial;">LISTA MATRICULA</label>
+        </mat-card-title>
+    </mat-card-header>
+    <mat-card-content style="margin: 1%;">
+
+        <mat-expansion-panel [expanded]="true" [title]="'Busqueda por criterio'">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <div class="d-flex align-items-center" style="font-size: 17px; font-weight: 900;">
+                        <em class="fa fa-list-ul fa-sm mr-2" aria-hidden="true"></em>&nbsp; Por criterios de búsqueda</div>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <form [formGroup]="formGroup">
+                <div class="row px-0" style="margin-top: -5px;">
+                    <div class="col-6 col-md-4 col-lg-3 my-2">
+                        <ng-select-simple [label]="'Tipo de filtro'" controlName="tipoFiltro" [item]="ngSelectTipoFiltro$" (change)="onChangeSelect($event)" [markFirstItem]="true"></ng-select-simple>
+                    </div>
+                    <div class="col-6 col-md-4 col-lg-2 my-2" *ngIf="isHideNroDni">
+                        <input-number [label]="'Número de DNI'" controlName="nroDni" [maxlength]="8"></input-number>
+                    </div>
+
+                    <ng-container *ngIf="isHideNomAp">
+                        <div class="col-6 col-md-4 col-lg-2 my-2">
+                            <input-text [label]="'Nombres'" controlName="nombre"></input-text>
+                        </div>
+                        <div class="col-6 col-md-4 col-lg-2 my-2">
+                            <input-text [label]="'Ap. Paterno'" controlName="apPaterno"></input-text>
+                        </div>
+                        <div class="col-6 col-md-4 col-lg-2 my-2">
+                            <input-text [label]="'Ap. Materno'" controlName="apMaterno"></input-text>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="isHideRangoFch">
+                        <div class="col-6 col-md-4 col-lg-3 my-2">
+                            <ng-select-simple [label]="'Estado alumno'" (change)="onChangeSelectEstAlumno($event)" controlName="estadoAlumno" [item]="ngSelectEstadoAlumno$" [markFirstItem]="true"></ng-select-simple>
+                        </div>
+                        <ng-container *ngIf="isMatriculado">
+                          <div class="col-6 col-md-4 col-lg-2 my-2">
+                              <ng-select-simple [label]="'Grado'" controlName="grado" [item]="ngSelectGrado$" [markFirstItem]="true"></ng-select-simple>
+                          </div>
+                          <div class="col-6 col-md-4 col-lg-2 my-2">
+                              <ng-select-simple [label]="'Sección'" controlName="seccion" [item]="ngSelectSeccion$" [markFirstItem]="true"></ng-select-simple>
+                          </div>
+                          <div class="col-6 col-md-4 col-lg-2 my-2">
+                              <input-number [label]="'Periodo y/o Año'" controlName="anio"></input-number>
+                          </div>
+                      </ng-container>
+                    </ng-container>
+                </div>
+            </form>
+            <div align="end" style="margin-top: -20px;">
+                <button class="btn btn-outline-primary" id="buttonAdd" (click)="onSearch()">Consultar</button>
+            </div>
+        </mat-expansion-panel>
+
+        <ag-grid-customizable
+          [labelBotton]="'Matricular'"
+          [columnDefs]="columnDefs"
+          [rowData]="rowData$"
+          [btnAdd]="{visible: false}"
+          (onGridReady)="onGridReadyHeader($event[0], $event[1])"
+          [configButtonsAction]="configButtonsAction"
+          (onButtonActionAgGrid)="onButtonActionAgGrid($event[0], $event[1])"
+          ></ag-grid-customizable>
+    </mat-card-content>
+</mat-card>
+

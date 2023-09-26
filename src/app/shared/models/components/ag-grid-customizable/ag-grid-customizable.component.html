@@ -42,7 +42,7 @@
 					<input #btnFileImport type="file" hidden="true" (change)="onImportEmit($event)" />
 				</div>
 				<div class="ag-grid-buttom__header my-2" *ngIf="btnAdd?.visible">
-					<sc-button #buttonAdd size="sm" color="warning" [attr.aria-label]="'Agregar'" [fill]="true" [disabled]="btnAdd.disabled || false" (onClick)="onAddRowEmit()"> Agregar </sc-button>
+					<sc-button #buttonAdd size="sm" color="warning" [attr.aria-label]="labelBotton" [fill]="true" [disabled]="btnAdd.disabled || false" (onClick)="onAddRowEmit()"> {{labelBotton}} </sc-button>
 				</div>
 			</div>
 		</div>
@@ -73,7 +73,7 @@
 					[frameworkComponents]="_frameworkComponents"
 					[context]="_context"
 					[animateRows]="true"
-          [rowSelection]="'multiple'"
+          [rowSelection]="rowSelection"
 					[overlayNoRowsTemplate]="_overlayNoRowsTemplate"
 					[overlayLoadingTemplate]="_overlayLoadingTemplate"
 					[suppressRowClickSelection]="true"

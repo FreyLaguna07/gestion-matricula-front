@@ -38,7 +38,7 @@ export class NgSelectSimpleComponent implements OnInit, OnDestroy {
   markFirstItemSelect() {
     if (this.markFirstItem && this.item) {
       this.item.subscribe((element: any) => {
-        console.log("this.controlName",this.controlName);
+        //console.log("this.controlName",this.controlName);
 
         this.setValueSelect = element[0].value;
         this.onChangeSelectCustom(element[0]);

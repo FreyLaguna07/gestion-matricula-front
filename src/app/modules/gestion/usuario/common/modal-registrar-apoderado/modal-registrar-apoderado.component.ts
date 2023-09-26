@@ -7,7 +7,7 @@ import { DataDialog } from 'src/app/@utils/modal-crud-component/DataDialog';
 import { Loading } from 'src/app/@utils/models/Loading';
 import { MessageUtilService } from 'src/app/@utils/models/message-util.service';
 import { TbApoderadoService } from 'src/app/core/services';
-import { SearchUsuarioDto } from 'src/app/shared/classes';
+import { SearchUsuarioDto } from 'src/app/shared/classes-custom';
 import { TbApoderadoDto } from 'src/app/shared/classes/TbApoderadoDto';
 import { EnumTipoOperador } from 'src/app/shared/enum/EnumTipoOperador';
 

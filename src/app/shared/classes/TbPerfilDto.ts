@@ -1,6 +1,6 @@
 export interface TbPerfilDto {
   idPerfil?: number | null;
-  cdoPerfil?: String | null;
+  codPerfil?: String | null;
   nombre?: String | null;
   detalle?: String | null;
   estado?: Boolean | null;

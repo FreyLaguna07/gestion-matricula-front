@@ -8,7 +8,7 @@ import { AgGridAngular } from 'ag-grid-angular';
 import { CheckboxListComponent } from '../ag-grid-render/checkbox-list.component';
 //import { ScAgGridPaginationComponent } from '../sc-ag-grid/sc-ag-grid-pagination/sc-ag-grid-pagination.component';
 
-import { EnumButtonType, ButtonHeader, ConfigButtonAction, ConfigButtonAgGrid } from 'src/app/@utils/models/sc-ag-grid.interface';
+import { EnumButtonType, ButtonHeader, ConfigButtonAction, ConfigButtonAgGrid, RowSelection } from 'src/app/@utils/models/sc-ag-grid.interface';
 import { CellRendererButtonComponent } from '../renderable-cells/actions/cell-render-button/cell-render-button.component';
 import { ScButton } from '../sc-button/sc-button.component';
 import { ScAgGridButtonHeader } from '../../directives/scAgGrid.directive';
@@ -37,11 +37,12 @@ export class AgGridCustomizableComponent implements OnInit, OnDestroy, OnChanges
 	@Input() rowData: Observable<any[]> = of([]);
 	@Input() columnDefs: ColDef[] = [];
 	@Input() cellRendererAction = 'cellRendererButtonComponent';
+  @Input() labelBotton = 'Agregar';
 
 	@Input() paginationPageSize = 15;
 	@Input() pagination = true;
 
-	@Input() rowSelection = 'multiple';
+	@Input() rowSelection:RowSelection = 'multiple';
 	@Input() visibleSearch = true;
   @Input() sizeHeight = '150px';
 
@@ -76,12 +77,13 @@ export class AgGridCustomizableComponent implements OnInit, OnDestroy, OnChanges
 	_gridColumnApi!: ColumnApi;
 
 	_columnDefsActions: ColDef[] = [];
+
 	_defaultColDef: ColDef = {
-		flex: 1,
 		resizable: true,
 		sortable: true,
 		autoHeight: true,
 	};
+
 	get _style() {
 		return {
 			width: '100%',
@@ -115,30 +117,6 @@ export class AgGridCustomizableComponent implements OnInit, OnDestroy, OnChanges
 
 	@Input() configButtonsAction!: ConfigButtonAction;
 
-	_configButtonsDefaultAgGrid: ConfigButtonAgGrid[] = [
-		{
-			actionCode: EnumButtonType.TYPE_EDIT,
-			tooltipOption: {
-				label: 'Modificar',
-				classList: 'bg-warning',
-			},
-			iconOption: {
-				icon: 'fa fa-pencil',
-				classList: 'text-warning',
-			},
-		},
-		{
-			actionCode: EnumButtonType.TYPE_DELETE,
-			tooltipOption: {
-				label: 'Eliminar',
-				classList: 'bg-danger',
-			},
-			iconOption: {
-				icon: 'fa fa-trash',
-				classList: 'text-danger',
-			},
-		},
-	];
 
 	//constructor(private readonly _exelUtilService: ExelUtilService, private readonly _changeRef: ChangeDetectorRef) {}
   constructor(private readonly _changeRef: ChangeDetectorRef) {}
@@ -156,7 +134,6 @@ export class AgGridCustomizableComponent implements OnInit, OnDestroy, OnChanges
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
-    console.log("changes",changes);
 		if (!this._gridApi) return;
 
 		//if (changes.configButtonsAction) this.initActionButton();
@@ -175,12 +152,6 @@ export class AgGridCustomizableComponent implements OnInit, OnDestroy, OnChanges
 
 		if (agGrid && agGrid.actions.length > 0) {
 			agGrid.defaultAction = agGrid.defaultAction ?? true;
-
-			if (agGrid.defaultAction) {
-				this._configButtonsDefaultAgGrid = [...this._configButtonsDefaultAgGrid, ...agGrid.actions];
-			} else {
-				this._configButtonsDefaultAgGrid = [...agGrid.actions];
-			}
 		}
 	}
 
@@ -221,15 +192,13 @@ export class AgGridCustomizableComponent implements OnInit, OnDestroy, OnChanges
 			cellRenderer = 'cellRendererButtonComponent';
 		}
 
-		const length = this._configButtonsDefaultAgGrid.length;
 		let minWidth;
 
 		if (length > 2) {
 			minWidth = length * 20 + 22;
 		} else {
-			minWidth = length == 2 ? 104 : 94;
+			minWidth = length == 2 ? 104 : 120;
 		}
-
 		const newColumns: ColDef = {
 			headerName: 'Acciones',
 			headerClass: 'ag-header__center',

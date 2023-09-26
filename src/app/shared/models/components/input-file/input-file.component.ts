@@ -17,6 +17,7 @@ export class InputFileComponent implements OnInit {
 
   @Input() label!: String;
   @Input() controlName!: string;
+  @Input() accept!: string;
   @Output() change = new EventEmitter<any>();
   constructor() { }
 
@@ -24,7 +25,7 @@ export class InputFileComponent implements OnInit {
   }
   disabled: boolean = false;
   multiple: boolean = false;
-  accept: string = '';
+
 
   onChangeCustom(event: any): void {
     //if (this.selectCustom) {

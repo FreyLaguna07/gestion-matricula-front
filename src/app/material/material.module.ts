@@ -27,6 +27,9 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgxSpinnerModule } from "ngx-spinner";
+import {MatTabsModule} from '@angular/material/tabs';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [],
@@ -62,7 +65,10 @@ import { NgxSpinnerModule } from "ngx-spinner";
     MatTooltipModule,
     MaterialFileInputModule,
     MatProgressBarModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    MatTabsModule,
+    MatFormFieldModule,
+    MatCheckboxModule
   ]
 })
 export class MaterialModule { }

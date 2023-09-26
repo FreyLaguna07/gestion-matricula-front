@@ -7,7 +7,8 @@ import { DataDialog } from 'src/app/@utils/modal-crud-component/DataDialog';
 import { Loading } from 'src/app/@utils/models/Loading';
 import { MessageUtilService } from 'src/app/@utils/models/message-util.service';
 import { TbCursoService } from 'src/app/core/services/TbCursoService.service';
-import { TbCursoDto } from 'src/app/shared/classes';
+import { TbCursoDto,  } from 'src/app/shared/classes';
+import { SearchCurso } from 'src/app/shared/classes-custom';
 import { CrudModalComponent } from 'src/app/shared/models/components/crud-modal-component/open-modal-component';
 import Swal from 'sweetalert2'
 
@@ -50,8 +51,11 @@ export class ModalRegistrarCursoComponent implements OnInit, OnDestroy {
   }
 
   fillForm() {
+    const search : SearchCurso = {
+      idCurso: 0
+    }
     this.subscription$.push(
-      this.tbCursoService.listCurso(this.data.idCrud).subscribe((data) => {
+      this.tbCursoService.listCurso(search).subscribe((data) => {
         if (data != null) {
           this.readonlyCodCurso = true;
           this.formGroup.get('codCurso')?.setValue(data[0]?.codCurso);
@@ -85,7 +89,7 @@ export class ModalRegistrarCursoComponent implements OnInit, OnDestroy {
         this.dialogRef.close(true);
       }else{
         this.loading.hide();
-        this.messageUtilService.getMessageInfo("Ya existe un registro con el código "+`${this.tbCursoDto?.codCurso}`);
+        this.messageUtilService.getMessageInfo("Ya existe un registro con el código: "+`${this.tbCursoDto?.codCurso}`);
       }
     }, err => this.loading.hide());
   }
