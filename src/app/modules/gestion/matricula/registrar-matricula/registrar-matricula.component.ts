@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { ColDef, UserCompDetails } from 'ag-grid-community';
-import { Observable, of } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
+import { Loading } from 'src/app/@utils/models/Loading';
+import { MessageUtilService } from 'src/app/@utils/models/message-util.service';
 import { NgSelect } from 'src/app/@utils/models/ngselect.interfaces';
 import { TbGradoService, TbMatriculaService, TbUsuarioService } from 'src/app/core/services';
 import { TbCursoService } from 'src/app/core/services/TbCursoService.service';
@@ -21,7 +23,10 @@ export class RegistrarMatriculaComponent implements OnInit {
   rowData$: Observable<any[]> = of([]);
   columnDefs: ColDef[] = [];
   idCrud: any;
-  nivelAcademico = 'PRIMARIA'
+  nivelAcademico = 'PRIMARIA';
+  isListAlumno: any;
+  loading = new Loading();
+  tbMatriculaDto!: TbMatriculaDto;
 
   ngSelectNivel$: Observable<{ label: string; value: string }[]> = of([
     { value: 'PRIMARIA', label: '01 - PRIMARIA' },
@@ -43,6 +48,7 @@ export class RegistrarMatriculaComponent implements OnInit {
     public readonly tbUsuarioService: TbUsuarioService,
     public readonly tbGradoService: TbGradoService,
     public readonly tbMatriculaService: TbMatriculaService,
+    private readonly messageUtilService : MessageUtilService,
   ) {
     this.initForm();
     this.route.paramMap.subscribe((params : ParamMap) => {
@@ -80,6 +86,7 @@ export class RegistrarMatriculaComponent implements OnInit {
     }
     const [resp] = await this.tbUsuarioService.listAlumMatriula(search) as TbUsuarioDto[];
     if(resp !== undefined){
+      this.isListAlumno = resp;
       const valueForm = {
         nombre: resp.nomUsuario,
         apPaterno: resp.apPaternoUsuario,
@@ -191,6 +198,7 @@ export class RegistrarMatriculaComponent implements OnInit {
     } else {
       this.formGroup.get('grado')?.setValue('1P');
     }
+    console.log(this.formGroup.get('grado')?.value);
     const search : SearchCurso = {
       idCurso: 0,
       codGrado: this.formGroup.get('grado')?.value,
@@ -199,7 +207,8 @@ export class RegistrarMatriculaComponent implements OnInit {
     this.searchCurso(search);
   }
 
-  onChangeSelectGrado(e: NgSelect): void {
+  onChangeSelectGrado(e: any): void {
+    console.log(e);
     const search : SearchCurso = {
       idCurso: 0,
       codGrado: String(e.value),
@@ -245,26 +254,56 @@ export class RegistrarMatriculaComponent implements OnInit {
 
   onSave(): void {
     if(this.formGroup.valid){
-      if(this.idCrud.split('-')[3] == 'M'){
+      if(this.idCrud.split('-')[2] == 'R'){
         this.insert();
-      }else{
+      } else if(this.idCrud.split('-')[2] == 'E') {
         this.update();
       }
     }
   }
+
   insert(): void {
+    this.loading.showSmall('Guardando...');
+    this.tbMatriculaDto = this.setResourceToSave('R');
+    this.tbMatriculaService.insert(this.tbMatriculaDto).subscribe((res) => {
+      console.log("resp ",res);
+        if (res !== null && res.codError === 1) {
+            this.loading.hide();
+            this.messageUtilService.getMessageSuccess('Registro exitoso', 'El usuario se registró correctamente.');
+        } else {
+            this.loading.hide();
+            this.messageUtilService.getMessageInfo('El alumno con Nro. DNI: ' + `${this.formGroup.get('nroDni')?.value}`);
+        }
+    }, (err) => this.loading.hide());
+}
 
+update(): void {
+    /*this.loading.showSmall('Actualizando...');
+    this.tTbUsuarioInsertOrUpdateDto = this.setResourceToSave('E');
+    this.tbMatriculaService.update(this.tTbUsuarioInsertOrUpdateDto).subscribe((res) => {
+        if (res !== null && res.codError === 1) {
+            this.loading.hide();
+            this.messageUtilService.getMessageSuccess('Actualización exitosa', 'El usuario se actualizó correctamente.');
+            this.router.navigate(['./nav/alumno']);
+        }
+    }, (err) => this.loading.hide());*/
+}
 
-  }
-  update(): void {
-
-  }
-
-  setResourceToSave(): TbMatriculaDto {
+  setResourceToSave(type: string): TbMatriculaDto {
     const valueForm = this.formGroup.getRawValue();
-    const tbMatriculaDto : TbMatriculaDto = {
-
+    let grado:any;
+    this.ngSelectGrado$.subscribe((g) => {
+      grado = g.find((e:any) => e.codGrado === valueForm.grado);
+    });
+    console.log("valueForm",valueForm);
+    const tbMatriculaDto : TbMatriculaDto = {};
+    if(this.idCrud.split('-')[3] == 'E'){
+      tbMatriculaDto.idMatricula = null;
     }
-    return tbMatriculaDto;
+    tbMatriculaDto.idGrado = grado.idGrado;
+    tbMatriculaDto.idUsuario = this.isListAlumno.idUsuario;
+    tbMatriculaDto.periodo = new Date().getFullYear()+'-1';
+    tbMatriculaDto.seccion = valueForm.seccion;
+    return {...tbMatriculaDto};
   }
 }
