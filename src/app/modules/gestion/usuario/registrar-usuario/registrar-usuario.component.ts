@@ -478,7 +478,7 @@ export class RegistrarUsuarioComponent extends OpenModalComponent < TbApoderadoD
       this.loading.showSmall('Guardando...');
       this.tTbUsuarioInsertOrUpdateDto = this.setResourceToSave('R');
       this.tbUsuarioService.insert(this.tTbUsuarioInsertOrUpdateDto).subscribe((res) => {
-          if (res !== null && res.codError === 1) {
+          if (res !== null && res.codError !== 0) {
               this.loading.hide();
               this.messageUtilService.getMessageSuccess('Registro exitoso', 'El usuario se registró correctamente.');
               this.router.navigate(['./nav/alumno']);
