@@ -70,9 +70,9 @@ export class ModalRegistrarCursoComponent implements OnInit, OnDestroy, AfterVie
   onChangeSelectNivelAcademico(e: NgSelect): void {
     this.ngSelectGrado$ = this.tbGradoService.getSelectList(String(e.value));
     if(e.value !== 'PRIMARIA'){
-      this.formGroup.get('grado')?.setValue(1);
-    } else {
       this.formGroup.get('grado')?.setValue(7);
+    } else {
+      this.formGroup.get('grado')?.setValue(1);
     }
   }
 
@@ -151,7 +151,7 @@ export class ModalRegistrarCursoComponent implements OnInit, OnDestroy, AfterVie
       tbCursoDto.idGrado = valueForm.grado;
     }
     tbCursoDto.codCurso = valueForm.codCurso;
-    tbCursoDto.horas = this.data.idCrud ? valueForm.horas : valueForm.horas + ':00';
+    tbCursoDto.horas = this.respSearchTbCursoDto?.horas === valueForm.horas ? valueForm.horas : valueForm.horas + ':00';
     tbCursoDto.nombre = valueForm.curso;
     tbCursoDto.descripcion = valueForm.descripcion;
     return tbCursoDto;

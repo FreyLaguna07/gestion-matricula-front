@@ -316,6 +316,14 @@ export class RegistrarUsuarioComponent extends OpenModalComponent < TbApoderadoD
               field: 'descripcion',
               width: 150
           }, {
+            headerName: 'Nivel Academico',
+            field: 'nivel',
+            width: 150
+          }, {
+            headerName: 'Grado',
+            field: 'nomGrado',
+            width: 150
+          }, {
               headerName: 'Estado',
               field: 'estado',
               valueGetter(params) {
@@ -496,7 +504,7 @@ export class RegistrarUsuarioComponent extends OpenModalComponent < TbApoderadoD
           if (res !== null && res.codError === 1) {
               this.loading.hide();
               this.messageUtilService.getMessageSuccess('Actualización exitosa', 'El usuario se actualizó correctamente.');
-              this.router.navigate(['./nav/alumno']);
+              this.router.navigate(['../alumno']);
           }
       }, (err) => this.loading.hide());
   }
