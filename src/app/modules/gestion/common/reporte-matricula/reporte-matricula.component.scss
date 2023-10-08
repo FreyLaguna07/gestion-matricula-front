@@ -1,0 +1,53 @@
+.img {
+  width: 80% !important;
+  //height: 30% !important;
+}
+.body {
+	margin: auto;
+	padding: 2em;
+	// max-width: 95em;
+	width: 100%;
+	box-shadow: 0 0 10px 2px #959595;
+	.div {
+		padding: 0 2em;
+	}
+}
+
+.app-actions-top,
+.app-actions-buton {
+	position: fixed;
+	z-index: 20;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 4rem;
+	padding: 0.4rem 1rem;
+
+	button {
+		color: #fff;
+	}
+}
+
+.app-actions-top {
+	left: 0;
+	top: 0;
+	width: 100%;
+}
+
+.app-actions-buton {
+	right: 0;
+	bottom: 0;
+	width: 10em;
+}
+
+.acronimo {
+  color: #000000;
+  font-size: 20px;
+  font-weight: 700;
+  text-decoration: none;
+  line-height: 1em;
+  font-style: italic;
+  font-family: Algerian;
+}
+
+
