@@ -144,6 +144,7 @@ export class ListarUsuarioComponent implements OnInit, AfterViewInit, AfterViewC
       },
     };
   }
+
   private readonly _agGridActions: ConfigButtonAgGrid[] = [
     {
       actionCode: EnumButtonType.TYPE_EDIT,

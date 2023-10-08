@@ -6,8 +6,13 @@ import { Observable, of, tap } from 'rxjs';
 import { DateFormatPipe } from 'src/app/@utils/date-util/DateFormatPipe';
 import { convertObserverToPromise } from 'src/app/@utils/models/FormUtil';
 import { ConfigButtonAction, ConfigButtonAgGrid, EnumButtonType } from 'src/app/@utils/models/sc-ag-grid.interface';
-import { TbUsuarioService } from 'src/app/core/services';
+import { TbGradoService, TbUsuarioService } from 'src/app/core/services';
+import { TbGradoDto, TbMatriculaDto, TbUsuarioDto } from 'src/app/shared/classes';
 import { SearchUsuarioDto } from 'src/app/shared/classes-custom';
+import { OpenModalComponent } from 'src/app/shared/models/components/open-modal-component/open-modal-component';
+import { ReporteMatriculaComponent } from '../../common/reporte-matricula/reporte-matricula.component';
+import { MatDialog } from '@angular/material/dialog';
+import { DIALOG_DATA } from '@angular/cdk/dialog';
 
 @Component({
   selector: 'app-listar-matricula',
@@ -28,19 +33,17 @@ export class ListarMatriculaComponent implements OnInit, AfterViewChecked {
     { value: 1, label: '02 - MATRICULADO' },
   ]);
 
-  ngSelectGrado$: Observable<{ label: string; value: string }[]> = of([
-    { value: '01', label: '01 - PRIMERO' },
-    { value: '02', label: '02 - SEGUNDO' },
-    { value: '02', label: '03 - TERCERO' },
-    { value: '02', label: '04 - CUARTO' },
-    { value: '02', label: '05 - QUINTO' },
-    { value: '02', label: '06 - SEXTO' },
-  ]);
+  ngSelectGrado$: Observable<TbGradoDto[]> = of([]);
 
   ngSelectSeccion$:Observable<{ label: string; value: string }[]> = of([
-    { value: 'SA', label: 'SA - SECCION A' },
-    { value: 'SB', label: 'SA - SECCION B' },
-    { value: 'SC', label: 'SC - SECCION C' },
+    { value: 'A', label: 'SA - SECCION A' },
+    { value: 'B', label: 'SA - SECCION B' },
+    { value: 'C', label: 'SC - SECCION C' },
+  ]);
+
+  ngSelectNivel$: Observable<{ label: string; value: string }[]> = of([
+    { value: 'PRIMARIA', label: '01 - PRIMARIA' },
+    { value: 'SECUNDARIA', label: '02 - SECUNDARIA' },
   ]);
 
   columnDefs: ColDef[] = [];
@@ -63,6 +66,8 @@ export class ListarMatriculaComponent implements OnInit, AfterViewChecked {
     protected router: Router,
     public readonly tbUsuarioService: TbUsuarioService,
     private readonly routers: Router,
+    private readonly tbGradoService: TbGradoService,
+    protected matDialog : MatDialog,
   ) {
     this.initForm();
   }
@@ -194,6 +199,7 @@ export class ListarMatriculaComponent implements OnInit, AfterViewChecked {
     };
   }
 
+
   onChangeSelect(e:any): void {
     this.onClearValueForm(true);
     switch (e.value) {
@@ -267,7 +273,8 @@ export class ListarMatriculaComponent implements OnInit, AfterViewChecked {
       apMaterno: [null],
       seccion: [null],
       grado: [null],
-      anio: [this._dateFormatPipe.getYear()]
+      anio: [this._dateFormatPipe.getYear()],
+      nivelAcademico: [null]
     });
   }
 
@@ -289,7 +296,7 @@ export class ListarMatriculaComponent implements OnInit, AfterViewChecked {
         apPaterno: formValue.apPaterno,
         apMaterno: formValue.apMaterno,
         seccion: formValue.seccion,
-        codGrado: formValue.grado,
+        idGrado: formValue.grado,
         anio: formValue.anio,
       }
       await this.tbUsuarioService.listAlumMatriula(search).then((data:any) =>{
@@ -307,8 +314,23 @@ export class ListarMatriculaComponent implements OnInit, AfterViewChecked {
       this.routers.navigate([`./nav/matricula/registrar/`+`${rowNode.data.idUsuario+'-'+rowNode.data.codPerfil}`+'-'+`E`]);
     } else if(type === EnumButtonType.TYPE_MATRICULAR) {
       this.routers.navigate([`./nav/matricula/registrar/`+`${rowNode.data.idUsuario+'-'+rowNode.data.codPerfil}`+'-'+`R`]);
+    } else if(type === EnumButtonType.TYPE_VER_RD) {
+      this.openReportMatricula(rowNode);
     }
   //this.router.navigate(['./nav/matricula/registrar']);
+  }
+
+  openReportMatricula(rowNode: any): void {
+    const data: any = [];
+		data.data = rowNode.data;
+		data.title = 'Routing Order';
+		data.subTitle = 'Generar';
+		this.matDialog.open(ReporteMatriculaComponent, {
+			width: '1050px',
+			height: '90vh',
+			maxHeight: '90vh',
+			data,
+		});
   }
 
   onGridReadyHeader(gridApi: GridApi, gridApiColumn: ColumnApi): void {
@@ -316,5 +338,12 @@ export class ListarMatriculaComponent implements OnInit, AfterViewChecked {
     this.gridColumnApi = gridApiColumn;
   }
 
-
+  onChangeNivelAcademico(e:any): void {
+    this.ngSelectGrado$ = this.tbGradoService.getSelectList(e.value);
+    if (e.value === 'PRIMARIA') {
+      this.formGroup.get('grado')?.setValue(1);
+    } else {
+      this.formGroup.get('grado')?.setValue(7);
+    }
+  }
 }

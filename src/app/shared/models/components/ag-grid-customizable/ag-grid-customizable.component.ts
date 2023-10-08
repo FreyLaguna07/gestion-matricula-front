@@ -93,11 +93,11 @@ export class AgGridCustomizableComponent implements OnInit, OnDestroy, OnChanges
 	}
 	_domLayout: DomLayoutType = 'autoHeight';
 
-	_frameworkComponents = {
+	/*_frameworkComponents = {
     editDeleteComponent: EditDeleteComponent,
 		cellRendererButtonComponent: CellRendererButtonComponent,
 		checkboxListComponent: CheckboxListComponent,
-	};
+	};*/
 	_context = { componentParent: this };
 
 	_overlayNoRowsTemplate = `<span class="ag-overlay-loading-center border-0 bg-transparent shadow-none">

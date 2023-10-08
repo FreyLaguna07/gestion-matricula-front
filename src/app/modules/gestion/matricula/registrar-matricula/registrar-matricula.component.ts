@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { ColDef, UserCompDetails } from 'ag-grid-community';
+import { ColDef, RowNode, UserCompDetails } from 'ag-grid-community';
 import { Observable, map, of } from 'rxjs';
 import { Loading } from 'src/app/@utils/models/Loading';
 import { MessageUtilService } from 'src/app/@utils/models/message-util.service';
@@ -121,7 +121,7 @@ export class RegistrarMatriculaComponent implements OnInit {
 
   initColumn() {
     this.columnDefs = [
-      {
+     /* {
           headerName: '',
           field: 'idCurso',
           minWidth: 40,
@@ -135,10 +135,34 @@ export class RegistrarMatriculaComponent implements OnInit {
               display: 'flex',
               'align-items': 'center'
           }
+      },*/
+      {
+        headerName: 'Curso',
+        field: 'nombre',
+        minWidth: 150,
+        width: 150,
+        maxWidth: 150,
+        lockPosition: true,
+        pinned: 'left',
+        cellClass: ['d-flex', 'justify-content-center'],
       },
       {
+        headerName: 'Cod. Curso',
+        field: 'codCurso',
+        minWidth: 100,
+        width: 100,
+        maxWidth: 100,
+        lockPosition: true,
+        pinned: 'left',
+        cellClass: ['d-flex', 'justify-content-center'],
+      },
+      /*{
           headerName: 'Cod. Curso',
           field: 'codCurso',
+          cellStyle: {
+            display: 'flex',
+            'align-items': 'center'
+          },
           width: 150,
           sort: 'asc'
       },
@@ -146,30 +170,40 @@ export class RegistrarMatriculaComponent implements OnInit {
           headerName: 'Curso',
           field: 'nombre',
           width: 150
-      },
+      },*/
       {
-          headerName: 'Horas',
+          headerName: 'Horas pedagógicas',
           field: 'horas',
-          width: 150
+          minWidth: 150,
+          width: 150,
+          maxWidth: 150,
       },
       {
           headerName: 'Descripción',
           field: 'descripcion',
-          width: 150
+          minWidth: 150,
+          width: 150,
+          maxWidth: 150,
       },
       {
         headerName: 'Grado',
         field: 'nomGrado',
-        width: 150
+        minWidth: 120,
+        width: 120,
+        maxWidth: 120,
       },
       {
         headerName: 'Nivel Academico',
         field: 'nivel',
-        width: 150
+        minWidth: 120,
+        width: 120,
+        maxWidth: 120,
+
       },
       {
         headerName: 'Docente',
         field: 'nivel',
+        minWidth: 150,
         width: 150,
         valueGetter(params: any){
           return params.data.nomDocente + ' ' + params.data.apPaternoDocente  + ' ' + params.data.apMaternoDocente;
@@ -178,7 +212,9 @@ export class RegistrarMatriculaComponent implements OnInit {
       {
         headerName: 'Nro. DNI',
         field: 'nroDniDocente',
-        width: 150
+        minWidth: 100,
+        width: 100,
+        maxWidth: 100,
       },
       {
           headerName: 'Estado',
@@ -186,7 +222,8 @@ export class RegistrarMatriculaComponent implements OnInit {
           valueGetter(params) {
               return params.data.estado ? 'Activo' : 'Inactivo';
           },
-          width: 150
+          minWidth: 120,
+          width: 120,
       },
     ];
   }
@@ -194,24 +231,23 @@ export class RegistrarMatriculaComponent implements OnInit {
   onChangeSelectNivelAcademico(e: NgSelect): void {
     this.ngSelectGrado$ = this.tbGradoService.getSelectList(String(e.value));
     if(e.value !== this.nivelAcademico){
-      this.formGroup.get('grado')?.setValue('1S');
+      this.formGroup.get('grado')?.setValue(7);
     } else {
-      this.formGroup.get('grado')?.setValue('1P');
+      this.formGroup.get('grado')?.setValue(1);
     }
-    console.log(this.formGroup.get('grado')?.value);
     const search : SearchCurso = {
       idCurso: 0,
-      codGrado: this.formGroup.get('grado')?.value,
+      idGrado: this.formGroup.get('grado')?.value,
       nivelAcademico: String(e.value),
     }
+
     this.searchCurso(search);
   }
 
   onChangeSelectGrado(e: any): void {
-    console.log(e);
     const search : SearchCurso = {
       idCurso: 0,
-      codGrado: String(e.value),
+      idGrado: Number(e.value),
       nivelAcademico: this.formGroup.get('tipoFiltro')?.value,
     }
     this.searchCurso(search);
@@ -239,7 +275,7 @@ export class RegistrarMatriculaComponent implements OnInit {
       let valueForm = this.formGroup.getRawValue();
       let searchCantAlum : SearchCurso = {
         nivelAcademico: valueForm.tipoFiltro,
-        codGrado: valueForm.grado,
+        idGrado: valueForm.grado,
         seccion: valueForm.seccion
       }
       this.tbMatriculaService.countAlumnosMatriculados(searchCantAlum).subscribe(
@@ -291,16 +327,12 @@ update(): void {
 
   setResourceToSave(type: string): TbMatriculaDto {
     const valueForm = this.formGroup.getRawValue();
-    let grado:any;
-    this.ngSelectGrado$.subscribe((g) => {
-      grado = g.find((e:any) => e.codGrado === valueForm.grado);
-    });
     console.log("valueForm",valueForm);
     const tbMatriculaDto : TbMatriculaDto = {};
     if(this.idCrud.split('-')[3] == 'E'){
       tbMatriculaDto.idMatricula = null;
     }
-    tbMatriculaDto.idGrado = grado.idGrado;
+    tbMatriculaDto.idGrado = valueForm.grado
     tbMatriculaDto.idUsuario = this.isListAlumno.idUsuario;
     tbMatriculaDto.periodo = new Date().getFullYear()+'-1';
     tbMatriculaDto.seccion = valueForm.seccion;

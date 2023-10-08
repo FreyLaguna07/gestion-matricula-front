@@ -13,6 +13,7 @@ export class SearchUsuarioDto{
     public estadoAlumno?: number | null,
     public seccion?: string,
     public codGrado?: string | null,
+    public idGrado?: number | null,
     public anio?: string | null,
   ){}
 }

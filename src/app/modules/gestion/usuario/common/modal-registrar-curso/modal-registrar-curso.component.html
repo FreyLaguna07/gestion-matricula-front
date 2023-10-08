@@ -20,6 +20,14 @@
           <input-text [label]="'Curso'" controlName="curso"></input-text>
         </div>
       </div>
+      <div class="row px-0" style="margin-top: -25px;">
+        <div class="col-6 col-md-4 col-lg-6 my-2">
+          <ng-select-simple [label]="'Nivel academico'" [item]="ngSelectNivel$" (change)="onChangeSelectNivelAcademico($event)" [markFirstItem]="true" controlName="nivAcademico" ></ng-select-simple>
+        </div>
+        <div class=" col-6 col-md-4 col-lg-6 my-2">
+          <ng-select-simple [label]="'Grado'" [item]="ngSelectGrado$" [markFirstItem]="true" controlName="grado" ></ng-select-simple>
+        </div>
+      </div>
       <div class="row px-0;" style=" margin-top: -25px; margin-bottom: -25px;">
         <div class="col-6 col-md-4 col-lg-12 my-2">
           <input-text-area [label]="'Descripción'" controlName="descripcion"></input-text-area>

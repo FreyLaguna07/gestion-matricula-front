@@ -35,18 +35,21 @@
                     </ng-container>
 
                     <ng-container *ngIf="isHideRangoFch">
-                        <div class="col-6 col-md-4 col-lg-3 my-2">
+                        <div class="col-6 col-md-4 col-lg-2 my-2">
                             <ng-select-simple [label]="'Estado alumno'" (change)="onChangeSelectEstAlumno($event)" controlName="estadoAlumno" [item]="ngSelectEstadoAlumno$" [markFirstItem]="true"></ng-select-simple>
                         </div>
                         <ng-container *ngIf="isMatriculado">
+                          <div class="col-6 col-md-4 col-lg-2 my-2">
+                            <ng-select-simple [label]="'Nivel academico'" controlName="nivelAcademico" (change)="onChangeNivelAcademico($event)" [item]=" ngSelectNivel$" [markFirstItem]="true"></ng-select-simple>
+                           </div>
                           <div class="col-6 col-md-4 col-lg-2 my-2">
                               <ng-select-simple [label]="'Grado'" controlName="grado" [item]="ngSelectGrado$" [markFirstItem]="true"></ng-select-simple>
                           </div>
                           <div class="col-6 col-md-4 col-lg-2 my-2">
                               <ng-select-simple [label]="'Sección'" controlName="seccion" [item]="ngSelectSeccion$" [markFirstItem]="true"></ng-select-simple>
                           </div>
-                          <div class="col-6 col-md-4 col-lg-2 my-2">
-                              <input-number [label]="'Periodo y/o Año'" controlName="anio"></input-number>
+                          <div class="col-6 col-md-4 col-lg-1 my-2">
+                              <input-number [label]="'Periodo'" controlName="anio"></input-number>
                           </div>
                       </ng-container>
                     </ng-container>

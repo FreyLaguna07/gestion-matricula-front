@@ -10,6 +10,7 @@ export interface TbCursoDto{
 
   //tb_grado
   idGrado?: number | null;
+  idNuevoGrado?: number | null;
   codGrado?: string | null;
   nomGrado?: string | null;
   nivel?: string | null;

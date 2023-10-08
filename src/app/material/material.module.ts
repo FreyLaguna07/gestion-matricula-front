@@ -30,6 +30,8 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import {MatTabsModule} from '@angular/material/tabs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import {MatChipsModule} from '@angular/material/chips';
+
 
 @NgModule({
   declarations: [],
@@ -68,7 +70,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     NgxSpinnerModule,
     MatTabsModule,
     MatFormFieldModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatChipsModule
   ]
 })
 export class MaterialModule { }

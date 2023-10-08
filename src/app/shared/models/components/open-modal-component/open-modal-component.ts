@@ -13,6 +13,8 @@ export abstract class OpenModalComponent<T>  {
   constructor(
     protected dialog: MatDialog | null,
     @Inject(String) protected dialogWidth?: string | null,
+    @Inject(String) protected dialogHeight?: string | null,
+
     ) { }
 
   abstract getRegisterComponent(): any;
@@ -33,7 +35,7 @@ export abstract class OpenModalComponent<T>  {
     }
     this.dialog?.open(this.getRegisterComponent(), {
         width: this.dialogWidth || '800px',
-        height: '350px',
+        height: String(this.dialogHeight) || '350px',
         disableClose: true,
         data: {
           subtitle: subtitle,

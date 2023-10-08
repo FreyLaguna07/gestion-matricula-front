@@ -70,6 +70,8 @@ export class RegistrarUsuarioComponent extends OpenModalComponent < TbApoderadoD
       },
   ]);
 
+  heightDialog = '350px'
+
   constructor(
     public readonly _fb : FormBuilder,
     public readonly tbPerfilService : TbPerfilService,
@@ -82,7 +84,8 @@ export class RegistrarUsuarioComponent extends OpenModalComponent < TbApoderadoD
     public _dateFormatPipe : DateFormatPipe,
     public readonly router: Router,
   ) {
-      super(matDialog, '650px');
+
+      super(matDialog, '750px', null);
       this.initForm();
       this.route.paramMap.subscribe((params : ParamMap) => {
           this.idCrud = params.get('id');
@@ -180,7 +183,7 @@ export class RegistrarUsuarioComponent extends OpenModalComponent < TbApoderadoD
           this.formGroup.get('tipoOperador') ?. setValue(data[0] ?. codOperador);
           this.formGroup.get('correo') ?. setValue(data[0] ?. correo);
           this.formGroup.get('copiDni') ?. setValue(toFile(data[0] ?. copiDni as string, data[0] ?. nomUsuario + '_DNI.pdf', 'application/pdf'));
-          const timeOut = setTimeout(() => {
+          setTimeout(() => {
               if (this.idCrud.split('-')[1] === '03') {
                   this.formGroup.get('copiPartidaNacimiento') ?. setValue(toFile(data[0] ?. copiPartidaNacimiento as string, data[0] ?. nomUsuario + '_PN.pdf', 'application/pdf'));
                   this.formGroup.get('foto') ?. setValue(toFile(data[0] ?. foto as string, data[0] ?. nomUsuario + '_FOTO.pdf', 'application/pdf'));
@@ -340,7 +343,9 @@ export class RegistrarUsuarioComponent extends OpenModalComponent < TbApoderadoD
   }
 
   onButtonActionAgGrid(type : string, rowNode : any): void {
+    if(type === EnumButtonType.TYPE_EDIT){
       this.genericEdit(rowNode);
+    }
       console.log('111111', {type, rowNode});
   }
 
@@ -437,6 +442,7 @@ export class RegistrarUsuarioComponent extends OpenModalComponent < TbApoderadoD
           }
       }
   }
+
   onSave(): void {
     if (this.formGroup.valid) {
       if (this.idCrud.split('-')[0] != '0') {

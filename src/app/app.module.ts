@@ -21,6 +21,7 @@ import { AgGridModule } from 'ag-grid-angular';
 import { LoginComponent } from './shared/login/login.component';
 import { DatePipe } from '@angular/common';
 import { CommonModule } from './modules/gestion/usuario/common/common.module';
+import { CommonsModule } from './modules/gestion/common/commons.module';
 
 
 @NgModule({
@@ -46,6 +47,7 @@ import { CommonModule } from './modules/gestion/usuario/common/common.module';
     NavRoutingModule,
     MaterialModule,
     AgGridModule,
+    CommonsModule,
 
   ],
   exports: [

@@ -25,7 +25,7 @@ export class TbGradoService {
 				map((data) =>
 					data.map((item) => ({
 						...item,
-						value: ""+item.codGrado,
+						value: item.idGrado,
 						label: `${item.codGrado} - ${item.nombre}`,
 					}))
 				),
