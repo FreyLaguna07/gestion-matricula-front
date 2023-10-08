@@ -481,7 +481,7 @@ export class RegistrarUsuarioComponent extends OpenModalComponent < TbApoderadoD
           if (res !== null && res.codError !== 0) {
               this.loading.hide();
               this.messageUtilService.getMessageSuccess('Registro exitoso', 'El usuario se registró correctamente.');
-              this.router.navigate(['./nav/alumno']);
+              //this.router.navigate(['#/nav/usuario']);
           } else {
               this.loading.hide();
               this.messageUtilService.getMessageInfo('Ya existe un registro con el  Nro. DNI: ' + `${this.tTbUsuarioInsertOrUpdateDto ?. nroDni}`);
