@@ -549,7 +549,7 @@ export class RegistrarUsuarioComponent extends OpenModalComponent < TbApoderadoD
       tTbUsuarioInsertOrUpdateDto.codOperador = valueForm.codOperador;
       tTbUsuarioInsertOrUpdateDto.correo = valueForm.correo;
       tTbUsuarioInsertOrUpdateDto.direccion = valueForm.direccion;
-      tTbUsuarioInsertOrUpdateDto.estadoAlumno = 0;
+      tTbUsuarioInsertOrUpdateDto.estadoAlumno = 1;
       tTbUsuarioInsertOrUpdateDto.idCursos = (getCurso ?. length != 0 && getCurso != null) ? getCurso?.map((getCurso:any) => {return getCurso.idCurso }) : null;//getCurso ?. length != 0 && getCurso != null ? getCurso[0].idCurso : null;
       tTbUsuarioInsertOrUpdateDto.idApoderado = (getApoderado ?. length != 0 && getApoderado != null) ? getApoderado[0].idApoderado : null;
       return {... tTbUsuarioInsertOrUpdateDto};

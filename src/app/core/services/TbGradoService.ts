@@ -16,7 +16,7 @@ export class TbGradoService {
   constructor(public readonly _http: HttpClient){}
 
   listGrado(nivelAcademico: String): Observable<TbGradoDto[]> {
-		return this._http.get<ApiResponse<Required<TbGradoDto>[]>>(`${this._url}/list/`+`${nivelAcademico}`).pipe(map((res) => res.data));
+		return this._http.get<ApiResponse<Required<TbGradoDto>[]>>(`${this._url}/list/`+`${nivelAcademico}/${0}`).pipe(map((res) => res.data));
 	}
 
   getSelectList(nivelAcademico: String): Observable<NgSelectOption<TbGradoDto>[]> {

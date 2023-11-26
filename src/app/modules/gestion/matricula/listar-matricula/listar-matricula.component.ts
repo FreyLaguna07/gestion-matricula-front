@@ -29,8 +29,8 @@ export class ListarMatriculaComponent implements OnInit, AfterViewChecked {
   ]);
 
   ngSelectEstadoAlumno$: Observable<{ label: string; value: number }[]> = of([
-    { value: 0, label: '01 - POR MATRICULAR' },
-    { value: 1, label: '02 - MATRICULADO' },
+    { value: 1, label: '01 - POR MATRICULAR' },
+    { value: 2, label: '02 - MATRICULADO' },
   ]);
 
   ngSelectGrado$: Observable<TbGradoDto[]> = of([]);
@@ -249,7 +249,7 @@ export class ListarMatriculaComponent implements OnInit, AfterViewChecked {
   onChangeSelectEstAlumno(e: any): void {
     this.onClearValueForm(false);
     switch (e.value) {
-      case 0:
+      case 1:
         this.isMatriculado = false;
         break;
       default:

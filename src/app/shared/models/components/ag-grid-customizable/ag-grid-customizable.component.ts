@@ -44,7 +44,7 @@ export class AgGridCustomizableComponent implements OnInit, OnDestroy, OnChanges
 
 	@Input() rowSelection:RowSelection = 'multiple';
 	@Input() visibleSearch = true;
-  @Input() sizeHeight = '150px';
+  @Input() sizeHeight = '260px';
 
 	@Output() onGridChange: EventEmitter<[GridApi, ColumnApi]> = new EventEmitter();
 	@Output() onGridReady = new EventEmitter<[GridApi, ColumnApi]>();
